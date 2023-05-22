@@ -8,8 +8,10 @@
       width="200"
       height="200"
     />
+    <div class="container">
     <h3 class="bold-text">Welkom bij <span class="bold">Stadsjutters</span></h3>
     <button class="btnLogin" @click="navigateToLogin">Login</button>
+    </div>
   </div>
 </template>
 
@@ -30,17 +32,23 @@ export default {
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
+  position: relative;
 }
 
 .bold-text {
   font-size: 30px;
   color: black;
+}
+@media (max-width: 768px) {
+  .bold-text {
+    font-size: 24px;
+  }
 }
 .bold {
   font-weight: bold;

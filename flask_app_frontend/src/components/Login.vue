@@ -1,6 +1,7 @@
 <template>
   <section>
     <div class="container">
+    <HelloWorld msg="Stadsjutters" />
       <main class="form-signin">
         <div class="login-form">
           <figure class="logo-figure">
@@ -10,25 +11,24 @@
             /></a>
           </figure>
 
-          <h1 class="h3 mb-3 fw-normal title">Please sign in</h1>
-
           <div class="form-floating">
+            <label for="username">Username</label>
             <input
               type="username"
               class="form-control"
               id="username"
               v-model="this.username"
             />
-            <label for="username">Username</label>
           </div>
           <div class="form-floating">
+            <label for="password">Password</label>
             <input
               type="password"
               class="form-control"
               id="password"
               v-model="this.password"
             />
-            <label for="password">Password</label>
+           
           </div>
 
           <div class="error-box mb-3">
@@ -37,14 +37,13 @@
           <button
             type="button"
             @click="login()"
-            class="w-100 btn btn-lg btn-primary"
+            class="btnLogin"
           >
-            Sign in
+            login
           </button>
           <label class="register"
-            ><a href="register">No account? Register here</a></label
+            ><a href="register">Register here</a></label
           >
-          <p class="mt-5 mb-3 text-muted">© 2021–2022</p>
         </div>
       </main>
     </div>
@@ -53,8 +52,12 @@
 </template>
 
 <script>
+import HelloWorld from "./HelloWorld.vue";
 export default {
   name: "login",
+   components: {
+    HelloWorld
+  },
   data() {
     return {
       username: "",
@@ -64,7 +67,7 @@ export default {
   },
   methods: {
     login() {
-      this.$axios
+      this.$store
         .dispatch("login", {
           username: this.username,
           password: this.password,
@@ -78,11 +81,75 @@ export default {
         });
     },
   },
+  
 };
 </script>
 
 
-<style>
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+}
+
+.bold-text {
+  font-size: 30px;
+  color: black;
+}
+.bold {
+  font-weight: bold;
+}
+
+.button-container {
+  margin-top: 2rem;
+}
+
+.btnLogin {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 25px;
+  color: white;
+  background-color: blue;
+  width: 100%;
+  color: white;
+}
+
+.form-floating input.form-control {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
+}
+
+.form-control.input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  padding: 5px;
+  font-size: 14px;
+  color: #333;
+}
+label {
+    display: block;
+     margin-top: 1rem;
+    font: 0.9rem 'Fira Sans', sans-serif;
+}
+  
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+}
 @media (min-width: 1024px) {
   .about {
     min-height: 100vh;
