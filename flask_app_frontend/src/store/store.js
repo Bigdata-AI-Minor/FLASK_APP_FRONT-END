@@ -48,7 +48,7 @@ const store = createStore({
         login({ commit }, parameters) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post("/login", {
+                    .post("/auth/login", {
                         id: parameters.id,
                         username: parameters.username,
                         password: parameters.password
