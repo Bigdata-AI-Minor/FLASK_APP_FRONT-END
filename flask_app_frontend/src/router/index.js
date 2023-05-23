@@ -6,7 +6,8 @@ const router = createRouter({
   routes: [
     { path: '/', name: 'home', component: HomeView },
     { path: '/login', name: 'login', component: () => import('../views/AboutView.vue')},
-    { path: '/library', name: 'library', component: () => import('../views/PhotoLibrary.vue')}
+    { path: '/library', name: 'library', component: () => import('../views/PhotoLibrary.vue')},
+    { path: '/camera', name: 'camera', component: () => import('../views/CameraDisplay.vue')},
   ]
 })
 

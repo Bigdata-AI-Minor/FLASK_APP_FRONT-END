@@ -1,15 +1,28 @@
 <template>
-  <div class="container">
-    <nav class="navbar navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">
-          Jouw foto's
-      </a>
+  <div>
+    <nav class="custom-navbar">
+      <a class="navbar-brand" href="#"> Jouw foto's </a>
     </nav>
-    <!-- <HelloWorld msg="Your photos" /> -->
     <div class="container">
-    <h3 class="bold-text">Welkom bij <span class="bold">Stadsjutters</span></h3>
-    <button class="btnLogin" @click="navigateToLogin">Login</button>
+      <div class="container">
+        <img alt="photolibrary" class="logo" src="@/assets/images/photolibrary.jpg" width="200" height="200"/>
+       <h3>Nog geen foto's</h3>
+       <h5>Je hebt nog geen foto's toegevoegd. klik op de camera om een foto te maken</h5>
+      </div>
     </div>
+    <footer>
+      <div class="footer-navigation">
+    <a href="/camera" class="footer-link">
+      <img src="@/assets/images/photolibrary/camera.jpg" alt="Image 1" class="footer-image">
+    </a>
+    <a href="#" class="footer-link">
+      <img src="@/assets/images/photolibrary/fotos.jpg" alt="Image 2" class="footer-image">
+    </a>
+    <a href="#" class="footer-link">
+      <img src="@/assets/images/photolibrary/profiel.jpg" alt="Image 3" class="footer-image">
+    </a>
+  </div>
+    </footer>
   </div>
 </template>
 
@@ -17,11 +30,6 @@
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 export default {
-  methods: {
-    navigateToLogin() {
-    //   this.$router.push("/login");
-    },
-  },
   components: {
     WelcomeItem,
     HelloWorld,
@@ -30,6 +38,31 @@ export default {
 </script>
 
 <style scoped>
+
+.footer-navigation {
+  display: flex;
+  justify-content: center;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px; /* Adjust the height based on your needs */
+  background-color: #f5f5f5; /* Adjust the background color based on your needs */
+  padding: 10px;
+}
+h5{
+  font-size: 12px;
+  text-align: center;
+}
+.custom-navbar {
+  background-color: blue;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
 
 .container {
   display: flex;

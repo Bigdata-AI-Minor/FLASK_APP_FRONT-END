@@ -1,62 +1,51 @@
 <template>
   <section>
-    <div class="container">
-    <HelloWorld msg="Stadsjutters" />
-      <main class="form-signin">
-        <div class="login-form">
-          <figure class="logo-figure">
-            <a href="home"
-              ><img3
-                class="mb-4 logo-login"
-            /></a>
-          </figure>
-
-          <div class="form-floating">
+    <div class="page-container">
+      <div class="container">
+        <HelloWorld msg="Stadsjutters" />
+        <main class="form-signin">
+          <div class="login-form">
+            <figure class="logo-figure">
+              <a href="home"><img3 class="mb-4 logo-login" /></a>
+            </figure>
             <label for="Username">Username</label>
-            <input
-              type="Username"
-              class="form-control"
-              id="Username"
-              v-model="this.Username"
-            />
-          </div>
-          <div class="form-floating">
+            <div class="form-floating">
+              <input
+                type="Username"
+                class="form-control"
+                id="Username"
+                v-model="this.Username"
+              />
+            </div>
             <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="Password"
-              v-model="this.Password"
-            />
-           
+            <div class="form-floating">
+              <input
+                type="password"
+                class="form-control"
+                id="Password"
+                v-model="this.Password"
+              />
+            </div>
+            <div class="error-box mb-3">
+              <label class="error_msg"> </label>
+            </div>
+            <button type="button" @click="login()" class="btnLogin">
+              login
+            </button>
+            <label class="register"><a href="register">Register</a></label>
           </div>
-
-          <div class="error-box mb-3">
-            <label class="error_msg"> </label>
-          </div>
-          <button
-            type="button"
-            @click="login()"
-            class="btnLogin"
-          >
-            login
-          </button>
-          <label class="register"
-            ><a href="register">Register</a></label
-          >
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   </section>
-  
 </template>
 
 <script>
 import HelloWorld from "./HelloWorld.vue";
 export default {
   name: "login",
-   components: {
-    HelloWorld
+  components: {
+    HelloWorld,
   },
   data() {
     return {
@@ -70,7 +59,7 @@ export default {
       this.$store
         .dispatch("login", {
           Username: this.Username,
-          Password: this.Password
+          Password: this.Password,
         })
         .then(() => {
           this.$router.push("/library");
@@ -81,24 +70,29 @@ export default {
         });
     },
   },
-  
 };
 </script>
 
-
 <style scoped>
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 50vh;
 }
 
 .bold-text {
   font-size: 30px;
   color: black;
 }
+
 .bold {
   font-weight: bold;
 }
@@ -131,12 +125,12 @@ export default {
   font-size: 14px;
   color: #333;
 }
+
 label {
-    display: block;
-     margin-top: 1rem;
-    font: 0.9rem 'Fira Sans', sans-serif;
+  display: block;
+  margin-top: 1rem;
+  font: 0.9rem 'Fira Sans', sans-serif;
 }
-  
 
 @media (min-width: 1024px) {
   header {
@@ -147,14 +141,6 @@ label {
 
   .logo {
     margin: 0 2rem 0 0;
-  }
-
-}
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
   }
 }
 </style>

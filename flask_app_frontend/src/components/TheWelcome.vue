@@ -1,16 +1,18 @@
 <template>
-  <div class="container">
-    <HelloWorld msg="Stadsjutters" />
-    <img
-      alt="Welcome logo"
-      class="logo"
-      src="@/assets/images/welcome.jpg"
-      width="200"
-      height="200"
-    />
+  <div class="page-container">
     <div class="container">
-    <h3 class="bold-text">Welkom bij <span class="bold">Stadsjutters</span></h3>
-    <button class="btnLogin" @click="navigateToLogin">Login</button>
+      <HelloWorld msg="Stadsjutters" />
+      <img
+        alt="Welcome logo"
+        class="logo"
+        src="@/assets/images/welcome.jpg"
+        width="200"
+        height="200"
+      />
+      <div class="content">
+        <h3 class="bold-text">Welkom bij <span class="bold">Stadsjutters</span></h3>
+        <button class="btnLogin" @click="navigateToLogin">Login</button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +34,12 @@ export default {
 </script>
 
 <style scoped>
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
 .container {
   display: flex;
@@ -54,8 +62,9 @@ export default {
   font-weight: bold;
 }
 
-.button-container {
+.content {
   margin-top: 2rem;
+  text-align: center;
 }
 
 .btnLogin {
@@ -65,10 +74,6 @@ export default {
   color: white;
   background-color: black;
   width: 100%;
-}
-
-button {
-  color: red;
 }
 
 .logo {
@@ -123,11 +128,3 @@ nav a:first-of-type {
   }
 }
 </style>
-
-
-
-
-
-
-
-
