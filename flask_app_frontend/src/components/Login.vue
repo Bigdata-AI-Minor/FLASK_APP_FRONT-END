@@ -12,12 +12,12 @@
           </figure>
 
           <div class="form-floating">
-            <label for="username">Username</label>
+            <label for="Username">Username</label>
             <input
-              type="username"
+              type="Username"
               class="form-control"
-              id="username"
-              v-model="this.username"
+              id="Username"
+              v-model="this.Username"
             />
           </div>
           <div class="form-floating">
@@ -25,8 +25,8 @@
             <input
               type="password"
               class="form-control"
-              id="password"
-              v-model="this.password"
+              id="Password"
+              v-model="this.Password"
             />
            
           </div>
@@ -42,7 +42,7 @@
             login
           </button>
           <label class="register"
-            ><a href="register">Register here</a></label
+            ><a href="register">Register</a></label
           >
         </div>
       </main>
@@ -60,8 +60,8 @@ export default {
   },
   data() {
     return {
-      username: "",
-      password: "",
+      Username: "",
+      Password: "",
       errorMessage: "",
     };
   },
@@ -69,11 +69,11 @@ export default {
     login() {
       this.$store
         .dispatch("login", {
-          username: this.username,
-          password: this.password,
+          Username: this.Username,
+          Password: this.Password
         })
         .then(() => {
-          this.$router.push("/");
+          this.$router.push("/library");
         })
         .catch((error) => {
           this.errorMessage = error;

@@ -5,7 +5,7 @@ const store = createStore({
     state() {
         return {
             token: null,
-            username: null,
+            Username: null,
             id: null
         }
     },
@@ -17,25 +17,25 @@ const store = createStore({
     mutations: {
         loginSuccesful(state, parameters) {
             state.token = parameters.token;
-            state.username = parameters.username;
+            state.Username = parameters.Username;
             state.id = parameters.id;
         },
         logout(state){
             state.token = null;
-            state.username = null;
+            state.Username = null;
             state.id = null;
         }
     },
     actions: {
         autoLogin({ commit }) {
             let token = localStorage.getItem('token');
-            let username = localStorage.getItem('username');
+            let Username = localStorage.getItem('Username');
             let id = localStorage.getItem('id');
             if (token) {
                 axios.defaults.headers.common["Authorization"] = "Bearer " + token;
                 commit('loginSuccesful', {
                     token: token,
-                    username: username,
+                    Username: Username,
                     id: id
                 });
             }
@@ -48,15 +48,21 @@ const store = createStore({
         login({ commit }, parameters) {
             return new Promise((resolve, reject) => {
                 axios
-                    .post("/auth/login", {
-                        id: parameters.id,
-                        username: parameters.username,
-                        password: parameters.password
-                    })
+                .post("http://localhost:5000/auth/login", {
+                //    id: parameters.id,
+                  Username: parameters.Username,
+                  Password: parameters.Password
+                }, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin' : '*',
+                    }
+                })
                     .then(res => {
+                        console.log(res)
                         axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
                         console.log(res.data.token);
-                        console.log("the button is doing something")
                         localStorage.setItem('token', res.data.token);
                         localStorage.setItem('username', res.data.username);
                         localStorage.setItem('id', res.data.id);
