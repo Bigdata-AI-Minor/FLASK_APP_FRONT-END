@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
-import axios from '../axios-auth'
+import axios from '../axios-auth';
+import jwtDecode from 'jwt-decode';
 
 const store = createStore({
     state() {
@@ -49,9 +50,10 @@ const store = createStore({
             return new Promise((resolve, reject) => {
                 axios
                 .post("http://localhost:5000/auth/login", {
+            
                 //    id: parameters.id,
                   Username: parameters.Username,
-                  Password: parameters.Password
+                  Password: parameters.Password,
                 }, {
                     headers: {
                         'Accept': 'application/json',
@@ -60,15 +62,15 @@ const store = createStore({
                     }
                 })
                     .then(res => {
-                        console.log(res)
-                        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.token;
-                        console.log(res.data.token);
-                        localStorage.setItem('token', res.data.token);
-                        localStorage.setItem('username', res.data.username);
-                        localStorage.setItem('id', res.data.id);
+                        const token = res.data.Authorization;
+                        const payload = jwtDecode(token);
+                        axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.Authorization;
+                        localStorage.setItem('token', res.data.Authorization);
+                        // localStorage.setItem('username', res.data.Username);
+                        localStorage.setItem('id', payload.sub);
                         commit('loginSuccesful', {
                             token: res.data.token,
-                            username: res.data.username,
+                            Username: res.data.Username,
                             id: res.data.id
                         });
                         resolve();

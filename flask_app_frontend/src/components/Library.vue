@@ -1,27 +1,52 @@
 <template>
-  <div>
+  <div class="container">
     <nav class="custom-navbar">
       <a class="navbar-brand" href="#"> Jouw foto's </a>
     </nav>
-    <div class="container">
       <div class="container">
-        <img alt="photolibrary" class="logo" src="@/assets/images/photolibrary.jpg" width="200" height="200"/>
-       <h3>Nog geen foto's</h3>
-       <h5>Je hebt nog geen foto's toegevoegd. klik op de camera om een foto te maken</h5>
-      </div>
+        <img
+          alt="photolibrary"
+          class="logo"
+          src="@/assets/images/photolibrary.jpg"
+          width="200"
+          height="200"
+        />
+        <h3>Nog geen foto's</h3>
+        <h5>
+          Je hebt nog geen foto's toegevoegd. klik op de camera om een foto te
+          maken
+        </h5>
     </div>
     <footer>
-      <div class="footer-navigation">
-    <a href="/camera" class="footer-link">
-      <img src="@/assets/images/photolibrary/camera.jpg" alt="Image 1" class="footer-image">
-    </a>
-    <a href="#" class="footer-link">
-      <img src="@/assets/images/photolibrary/fotos.jpg" alt="Image 2" class="footer-image">
-    </a>
-    <a href="#" class="footer-link">
-      <img src="@/assets/images/photolibrary/profiel.jpg" alt="Image 3" class="footer-image">
-    </a>
-  </div>
+      <div class="row">
+        <div class="col">
+          <a href="/camera" class="footer-link">
+            <img
+              src="@/assets/images/photolibrary/camera.jpg"
+              alt="Image 1"
+              class="footer-image"
+            />
+          </a>
+        </div>
+          <div class="col">
+            <a href="#" class="footer-link">
+              <img
+                src="@/assets/images/photolibrary/fotos.jpg"
+                alt="Image 2"
+                class="footer-image"
+              />
+            </a>
+          </div>
+          <div class="col">
+            <a href="/profile" class="footer-link">
+              <img
+                src="@/assets/images/photolibrary/profiel.jpg"
+                alt="Image 3"
+                class="footer-image"
+              />
+            </a>
+          </div>
+      </div>
     </footer>
   </div>
 </template>
@@ -38,7 +63,20 @@ export default {
 </script>
 
 <style scoped>
-
+.col {
+  text-align: center;
+}
+.custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: blue;
+  color: white;
+  text-align: center;
+  z-index: 1;
+  padding: 10px;
+}
 .footer-navigation {
   display: flex;
   justify-content: center;
@@ -52,15 +90,8 @@ footer {
   background-color: #f5f5f5; /* Adjust the background color based on your needs */
   padding: 10px;
 }
-h5{
+h5 {
   font-size: 12px;
-  text-align: center;
-}
-.custom-navbar {
-  background-color: blue;
-  width: 100%;
-  padding: 10px;
-  color: white;
   text-align: center;
 }
 
@@ -70,6 +101,7 @@ h5{
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-top: 30px;
 }
 
 .bold-text {
@@ -146,11 +178,8 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
-    margin-top: 1rem;
   }
 }
 </style>

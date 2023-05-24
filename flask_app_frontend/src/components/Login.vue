@@ -26,11 +26,11 @@
                 v-model="this.Password"
               />
             </div>
-            <div class="error-box mb-3">
-              <label class="error_msg"> </label>
+           <div class="error-box mb-3">
+              <label class="error-msg">{{ message }}</label>
             </div>
             <button type="button" @click="login()" class="btnLogin">
-              login
+              Login
             </button>
             <label class="register"><a href="register">Register</a></label>
           </div>
@@ -51,7 +51,7 @@ export default {
     return {
       Username: "",
       Password: "",
-      errorMessage: "",
+      message: "",
     };
   },
   methods: {
@@ -65,8 +65,7 @@ export default {
           this.$router.push("/library");
         })
         .catch((error) => {
-          this.errorMessage = error;
-          console.log(error);
+          this.message = error.response.data.message;
         });
     },
   },
@@ -74,6 +73,9 @@ export default {
 </script>
 
 <style scoped>
+.error-msg{
+  color: red;
+}
 .page-container {
   display: flex;
   justify-content: center;
