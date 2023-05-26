@@ -4,5 +4,8 @@
     "bootstrap": "^5.2.3",
     "jwt-decode": "^3.1.2",
     "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "require-context.macro": "^1.2.2"
   }
 }

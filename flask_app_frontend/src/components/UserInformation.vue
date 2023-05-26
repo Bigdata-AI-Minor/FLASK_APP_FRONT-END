@@ -15,8 +15,8 @@
           </div>
           <div class="box">
             <label class="user" for="Password">Password</label>
-            <label class="user">GETPASSWORD FROM BACKEND</label>
-            <button>btn</button>
+             <label class="user"><label class="user">{{ passwordLength  }}</label></label>
+             <button @click="showModal = true">Edit</button>
           </div>
         </div>
       </div>
@@ -41,7 +41,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="#" class="footer-link">
+          <a href="/library" class="footer-link">
             <img
               src="@/assets/images/photolibrary/fotos.jpg"
               alt="Image 2"
@@ -50,7 +50,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="#" class="footer-link">
+          <a href="/profile" class="footer-link">
             <img
               src="@/assets/images/photolibrary/profiel.jpg"
               alt="Image 3"
@@ -60,6 +60,7 @@
         </div>
       </div>
     </footer>
+    <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
@@ -67,11 +68,13 @@
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
+import SavedModal from '../components/PasswordModal.vue'
 export default {
   name: "Profile",
   data() {
     return {
       currentUser: Object,
+      showModal: false,
     };
   },
   methods: {
@@ -89,13 +92,20 @@ export default {
         .catch((error) => console.log(error));
     },
   },
+  computed: {
+    passwordLength(){ return localStorage.getItem("passwordLength");}
+  },
   mounted() {
     this.getUser();
   },
+
   components: {
     WelcomeItem,
     HelloWorld,
+    SavedModal
   },
+  
+  
 };
 </script>
 

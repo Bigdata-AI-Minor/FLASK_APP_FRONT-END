@@ -8,7 +8,9 @@ const router = createRouter({
     { path: '/login', name: 'login', component: () => import('../views/AboutView.vue')},
     { path: '/library', name: 'library', component: () => import('../views/PhotoLibrary.vue')},
     { path: '/camera', name: 'camera', component: () => import('../views/CameraDisplay.vue')},
-    { path: '/profile', name: 'profile', component: () => import('../views/Profile.vue')}
+    { path: '/profile', name: 'profile', component: () => import('../views/Profile.vue')},
+    { path: '/prediction', name: 'prediction', component: () => import('../views/PredectionDecision.vue')},
+    { path: '/predictionmodify', name: 'predictionmodify', component: () => import('../views/PredectionChange.vue')}
   ]
 })
 

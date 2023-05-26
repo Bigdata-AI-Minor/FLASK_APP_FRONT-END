@@ -2,6 +2,15 @@ import { createStore } from 'vuex';
 import axios from '../axios-auth';
 import jwtDecode from 'jwt-decode';
 
+
+function maskPassword(password) {
+    var maskedPassword = "";
+    for (var i = 0; i < password.length; i++) {
+      maskedPassword += "*";
+    }
+    return maskedPassword;
+  }
+
 const store = createStore({
     state() {
         return {
@@ -64,10 +73,12 @@ const store = createStore({
                     .then(res => {
                         const token = res.data.Authorization;
                         const payload = jwtDecode(token);
+                        const maskedPassword = maskPassword(parameters.Password)
                         axios.defaults.headers.common["Authorization"] = "Bearer " + res.data.Authorization;
                         localStorage.setItem('token', res.data.Authorization);
-                        // localStorage.setItem('username', res.data.Username);
                         localStorage.setItem('id', payload.sub);
+                        localStorage.setItem('password', parameters.Password);
+                        localStorage.setItem('passwordLength', maskedPassword);
                         commit('loginSuccesful', {
                             token: res.data.token,
                             Username: res.data.Username,

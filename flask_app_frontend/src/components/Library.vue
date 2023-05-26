@@ -3,7 +3,8 @@
     <nav class="custom-navbar">
       <a class="navbar-brand" href="#"> Jouw foto's </a>
     </nav>
-      <div class="container">
+    <div class="container">
+      <div v-if="images.length === 0">
         <img
           alt="photolibrary"
           class="logo"
@@ -13,9 +14,22 @@
         />
         <h3>Nog geen foto's</h3>
         <h5>
-          Je hebt nog geen foto's toegevoegd. klik op de camera om een foto te
-          maken
+          Je hebt nog geen foto's toegevoegd. Klik op de camera om een foto te
+          maken.
         </h5>
+      </div>
+      <div class="row">
+        <div v-for="(image, index) in images" :key="index" class="col">
+          <div class="image-container">
+            <img
+              :src="image.path"
+              :alt="image.name"
+              class="image"
+              @click="downloadImage(image.path)"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <footer>
       <div class="row">
@@ -28,24 +42,24 @@
             />
           </a>
         </div>
-          <div class="col">
-            <a href="#" class="footer-link">
-              <img
-                src="@/assets/images/photolibrary/fotos.jpg"
-                alt="Image 2"
-                class="footer-image"
-              />
-            </a>
-          </div>
-          <div class="col">
-            <a href="/profile" class="footer-link">
-              <img
-                src="@/assets/images/photolibrary/profiel.jpg"
-                alt="Image 3"
-                class="footer-image"
-              />
-            </a>
-          </div>
+        <div class="col">
+          <a href="/library" class="footer-link">
+            <img
+              src="@/assets/images/photolibrary/fotos.jpg"
+              alt="Image 2"
+              class="footer-image"
+            />
+          </a>
+        </div>
+        <div class="col">
+          <a href="/profile" class="footer-link">
+            <img
+              src="@/assets/images/photolibrary/profiel.jpg"
+              alt="Image 3"
+              class="footer-image"
+            />
+          </a>
+        </div>
       </div>
     </footer>
   </div>
@@ -54,10 +68,35 @@
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+import image1 from "@/assets/images/photolibrary/camera.jpg";
+import image2 from "@/assets/images/photolibrary/fotos.jpg";
+import image3 from "@/assets/images/photolibrary/profiel.jpg";
+// import requireContext from 'require-context.macro';
 export default {
+  name: "Gallery",
+  data() {
+    return {
+      images: [],
+    };
+  },
   components: {
     WelcomeItem,
     HelloWorld,
+  },
+  mounted() {
+    this.loadImages();
+  },
+  methods: {
+    loadImages() {
+      this.images = [
+        { path: image1, name: "Image 1" },
+        { path: image2, name: "Image 2" },
+        { path: image3, name: "Image 3" },
+      ];
+    },
+    getFileNameFromPath(path) {
+      return path.split("/").pop();
+    },
   },
 };
 </script>
@@ -98,7 +137,7 @@ h5 {
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   position: relative;
   margin-top: 30px;
