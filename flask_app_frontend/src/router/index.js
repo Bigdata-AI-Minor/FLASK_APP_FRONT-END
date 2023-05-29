@@ -10,7 +10,8 @@ const router = createRouter({
     { path: '/camera', name: 'camera', component: () => import('../views/CameraDisplay.vue')},
     { path: '/profile', name: 'profile', component: () => import('../views/Profile.vue')},
     { path: '/prediction', name: 'prediction', component: () => import('../views/PredectionDecision.vue')},
-    { path: '/predictionmodify', name: 'predictionmodify', component: () => import('../views/PredectionChange.vue')}
+    { path: '/predictionmodify', name: 'predictionmodify', component: () => import('../views/PredectionChange.vue')},
+    { path: '/details', name: 'imagedetails', component: () => import('../views/ImageDetails.vue')}
   ]
 })
 

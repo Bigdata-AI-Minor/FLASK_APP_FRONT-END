@@ -6,10 +6,10 @@ import jwtDecode from 'jwt-decode';
 function maskPassword(password) {
     var maskedPassword = "";
     for (var i = 0; i < password.length; i++) {
-      maskedPassword += "*";
+        maskedPassword += "*";
     }
     return maskedPassword;
-  }
+}
 
 const store = createStore({
     state() {
@@ -30,7 +30,7 @@ const store = createStore({
             state.Username = parameters.Username;
             state.id = parameters.id;
         },
-        logout(state){
+        logout(state) {
             state.token = null;
             state.Username = null;
             state.id = null;
@@ -50,26 +50,38 @@ const store = createStore({
                 });
             }
         },
-        logout({commit}){
-            axios.defaults.headers.common["Authorization"] = "";
-            localStorage.clear()
-            commit('logout');
+        logout({ commit }) {
+            return new Promise((resolve, reject) => {
+                axios.post("auth/logout", {}, {
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                    }
+                }
+                )
+                    .then(res => {
+                        axios.defaults.headers.common["Authorization"] = "";
+                        localStorage.clear()
+                        commit('logout');
+                        resolve();
+                    })
+                    .catch((error) => reject(error));
+            })
+
         },
         login({ commit }, parameters) {
             return new Promise((resolve, reject) => {
                 axios
-                .post("http://localhost:5000/auth/login", {
-            
-                //    id: parameters.id,
-                  Username: parameters.Username,
-                  Password: parameters.Password,
-                }, {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Origin' : '*',
-                    }
-                })
+                    .post("/auth/login", {
+
+                        Username: parameters.Username,
+                        Password: parameters.Password,
+                    }, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Access-Control-Allow-Origin': '*',
+                        }
+                    })
                     .then(res => {
                         const token = res.data.Authorization;
                         const payload = jwtDecode(token);
@@ -78,6 +90,7 @@ const store = createStore({
                         localStorage.setItem('token', res.data.Authorization);
                         localStorage.setItem('id', payload.sub);
                         localStorage.setItem('password', parameters.Password);
+                        localStorage.setItem('username', parameters.Username);
                         localStorage.setItem('passwordLength', maskedPassword);
                         commit('loginSuccesful', {
                             token: res.data.token,

@@ -4,8 +4,15 @@
       <div class="container">
         <div class="background-layer">
           <h4>Wachtwoord is gewijzigd</h4>
-          <div class="close" @click="$emit('close-modal')">
-            <button class="btnBevestigen">Bevestigen</button>
+          <div class="close">
+            <div class="button-container">
+              <button class="btnCorrect" @click="navigateToCamera"> 
+                Correct
+              </button>
+              <button class="btnIncorrect" @click="$emit('close-modal')">
+                Incorrect
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -13,11 +20,29 @@
   </div>
 </template>
 
-
+<!-- TODO navigate to the bevistige van upload scherm en close modal after pressing exit -->
 
 
 <style scoped>
-label {
+.btnIncorrect {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 11px;
+  color: white;
+  background-color: rgba(255, 0, 0, 0.664);
+  width: 100%;
+  margin-left: 10px;
+}
+.btnCorrect {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 11px;
+  color: white;
+  background-color: rgb(43, 199, 43);
+  width: 100%;
+  margin-right: 10px;
+}
+.button label {
   display: block;
   margin-top: 1rem;
 }

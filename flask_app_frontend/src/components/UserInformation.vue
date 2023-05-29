@@ -10,13 +10,17 @@
         </figure>
         <div class="space">
           <div class="box">
-            <label class="user" for="Username">Username</label>
-            <label class="user"><label class="user">{{ currentUser.data ? currentUser.data.Username : '' }}</label></label>
+            <img src="@/assets/images/profilelogo.jpg"  alt="editprofile" class="profilelogo" />
+            <label><label class="user">{{ username }}</label></label>
           </div>
           <div class="box">
-            <label class="user" for="Password">Password</label>
-             <label class="user"><label class="user">{{ passwordLength  }}</label></label>
-             <button @click="showModal = true">Edit</button>
+            <img src="@/assets/images/passwordlogo.jpg" alt="edit password" class="profilelogo" />
+             <label ><label class="user">{{ passwordLength  }}</label></label>
+              <img src="@/assets/images/editlogo.jpg"  @click="showModal = true" alt="Exit modal" class="editlogo" />
+          </div>
+          <div class="box">
+             <label ><label class="user">Upload History</label></label>
+              <img src="@/assets/images/editlogo.jpg"  @click="showModal = true" alt="Exit modal" class="editlogo" />
           </div>
         </div>
       </div>
@@ -28,7 +32,7 @@
       width="200"
       height="200"
     />
-    <button class="btnLogin">Logout</button>
+    <button @click="logout()" class="btnLogin">Logout</button>
     <footer>
       <div class="row">
         <div class="col">
@@ -75,6 +79,7 @@ export default {
     return {
       currentUser: Object,
       showModal: false,
+      username: localStorage.getItem("username")
     };
   },
   methods: {
@@ -87,9 +92,19 @@ export default {
         })
         .then((res) => {
         this.currentUser = res.data;
-         console.log(this.currentUser.data.Username)
         })
         .catch((error) => console.log(error));
+    },
+    logout() {
+      this.$store
+        .dispatch("logout")
+        .then(() => {
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          this.errorMessage = error;
+          console.log(error);
+        });
     },
   },
   computed: {
@@ -110,16 +125,28 @@ export default {
 </script>
 
 <style scoped>
+.profilelogo{
+  margin-right: 10px;
+}
+
+.editlogo{
+  margin-left: auto;
+}
+.form-signin{
+  width: 100%;
+}
 .box {
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid black; /* Add a border-bottom to the label */
   padding-bottom: 5px;
+  padding: 10px;
 }
 .space {
   margin-top: 100px;
+  justify-content: space-between;
 }
-.user {
-  margin-right: 10px;
-}
+
 
 .btnLogin {
   padding: 1rem 2rem;
@@ -129,6 +156,7 @@ export default {
   background-color: blue;
   width: 100%;
   color: white;
+  margin-top: 80px;
 }
 
 .col {

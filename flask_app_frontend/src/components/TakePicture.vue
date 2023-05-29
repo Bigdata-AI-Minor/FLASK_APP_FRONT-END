@@ -3,12 +3,15 @@
     <video ref="video" :class="{ 'fullscreen-video': isMobile }">
       Stream unavailable
     </video>
-    <!-- <button class="takepicture" @click="takePicture">Take picture</button> -->
-    <!-- <button class="fotos" @click="takePicture">fotos</button> -->
-    <img src="@/assets/images/fotoclick.jpg" alt="takepicture" @click="takePicture"  class="takepicture"/>
-    <a href="/library" class="footer-link"> <img src="@/assets/images/fotoslogo.jpg" alt="Image 3" class="fotos" /> </a>
-    <!-- <img src="@/assets/images/fotoslogo.jpg" alt="photos" @click="takePicture"  class="takepicture"/> -->
-    <!-- <button @click="takePicture" class="capture-button">Take picture</button> -->
+    <img
+      src="@/assets/images/fotoclick.jpg"
+      alt="takepicture"
+      @click="takePicture"
+      class="takepicture"
+    />
+    <a href="/library" class="footer-link">
+      <img src="@/assets/images/fotoslogo.jpg" alt="Image 3" class="fotos" />
+    </a>
     <canvas ref="canvas" style="display: none"></canvas>
   </div>
 </template>
@@ -59,8 +62,12 @@ export default {
     downloadImage(imageData) {
       const link = document.createElement("a");
       link.href = imageData;
-      link.download = "picture.jpg";
+      link.download = `${this.generateRandomId()}.jpg`;
       link.click();
+    },
+    // random Id gets generated based on current time combined with a random Id, of that number it takes the first ten
+    generateRandomId() {
+      return `${Date.now()}-${Math.random()}`.slice(0, 10);
     },
     initCanvas() {
       this.canvas.setAttribute("width", this.video.videoWidth);

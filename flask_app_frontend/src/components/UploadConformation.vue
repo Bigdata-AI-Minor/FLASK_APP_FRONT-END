@@ -3,7 +3,7 @@
     <div class="page-container">
       <div class="container">
         <div class="background-layer">
-          <h4>Wachtwoord is gewijzigd</h4>
+          <h4>Je afbeeldingen zijn gëupload</h4>
           <div class="close" @click="$emit('close-modal')">
             <button class="btnBevestigen">Bevestigen</button>
           </div>

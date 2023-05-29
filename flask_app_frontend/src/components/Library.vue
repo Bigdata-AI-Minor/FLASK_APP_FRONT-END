@@ -20,16 +20,15 @@
       </div>
       <div class="row">
         <div v-for="(image, index) in images" :key="index" class="col">
-          <div class="image-container">
-            <img
-              :src="image.path"
-              :alt="image.name"
-              class="image"
-              @click="downloadImage(image.path)"
-            />
-          </div>
+          <img
+            :src="image.path"
+            :alt="image.name"
+            class="image"
+            @click="toggleSelection(image)"
+          />
         </div>
       </div>
+      <button class="upload">Upload</button>
     </div>
     <footer>
       <div class="row">
@@ -68,10 +67,6 @@
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
-import image1 from "@/assets/images/photolibrary/camera.jpg";
-import image2 from "@/assets/images/photolibrary/fotos.jpg";
-import image3 from "@/assets/images/photolibrary/profiel.jpg";
-// import requireContext from 'require-context.macro';
 export default {
   name: "Gallery",
   data() {
@@ -88,11 +83,21 @@ export default {
   },
   methods: {
     loadImages() {
-      this.images = [
-        { path: image1, name: "Image 1" },
-        { path: image2, name: "Image 2" },
-        { path: image3, name: "Image 3" },
-      ];
+      this.images = [];
+      const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
+      for (const imagePath in imageFiles) {
+        if (imageFiles.hasOwnProperty(imagePath)) {
+          const imageName = this.getFileNameFromPath(imagePath);
+          const image = {
+            path: imagePath,
+            name: imageName,
+          };
+          this.images.push(image);
+        }
+      }
+    },
+    toggleSelection(image) {
+      image.selected = !image.selected;
     },
     getFileNameFromPath(path) {
       return path.split("/").pop();
@@ -102,6 +107,28 @@ export default {
 </script>
 
 <style scoped>
+.upload{
+    padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 25px;
+  color: white;
+  background-color: blue;
+  width: 100%;
+  color: white;
+  width: -webkit-fill-available;
+}
+.image {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
+}
+.upload {
+  position: fixed; /* or position: absolute; */
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Add other styles for the button */
+}
 .col {
   text-align: center;
 }

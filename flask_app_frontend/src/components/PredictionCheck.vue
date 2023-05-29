@@ -8,20 +8,20 @@
         width="200"
         height="200"
       />
-       <h4 class="bold-text">Voorspelling: <span class="bold">XXX</span> klopt dit?</h4>
+      <h4 class="bold-text">
+        Voorspelling: <span class="bold">XXX</span> klopt dit?
+      </h4>
       <div class="content">
-         <div class="button-container">
-        <button class="btnCorrect" @click="navigateToCamera">Correct</button>
-        <button class="btnIncorrect" @click="navigateToPredicionChange">Incorrect</button>
-      </div>
+        <div class="button-container">
+          <button class="btnCorrect" @click="navigateToCamera">Correct</button>
+          <button class="btnIncorrect" @click="navigateToPredicionChange">
+            Incorrect
+          </button>
+        </div>
         <a href="/camera">
-            <img
-              src="@/assets/images/cameraIcon.jpg"
-              alt="cameraicon"
-            />
-          </a>
+          <img src="@/assets/images/cameraIcon.jpg" alt="cameraicon" />
+        </a>
       </div>
-     
     </div>
   </div>
 </template>
@@ -46,9 +46,8 @@ export default {
 </script>
 
 <style scoped>
-
-.btnIncorrect{
-      padding: 1rem 2rem;
+.btnIncorrect {
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   border-radius: 11px;
   color: white;
@@ -56,8 +55,8 @@ export default {
   width: 100%;
   margin-left: 10px;
 }
-.btnCorrect{
-padding: 1rem 2rem;
+.btnCorrect {
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   border-radius: 11px;
   color: white;
@@ -70,8 +69,8 @@ padding: 1rem 2rem;
 }
 
 .button-container button {
-margin-bottom: 70px;
-flex: 1;
+  margin-bottom: 70px;
+  flex: 1;
 }
 .page-container {
   display: flex;
@@ -105,7 +104,6 @@ flex: 1;
   margin-top: 2rem;
   text-align: center;
 }
-
 
 .logo {
   display: block;
