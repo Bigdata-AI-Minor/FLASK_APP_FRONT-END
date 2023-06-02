@@ -1,6 +1,7 @@
 import { createStore } from 'vuex';
 import axios from '../axios-auth';
 import jwtDecode from 'jwt-decode';
+import createPersistedState from 'vuex-persistedstate';
 
 
 function maskPassword(password) {
@@ -12,38 +13,51 @@ function maskPassword(password) {
 }
 
 const store = createStore({
+    plugins: [createPersistedState()],
     state() {
         return {
             token: null,
             Username: null,
             id: null,
             imageLocationData: {},
+            latitude: null,
+            longitude: null,
         }
     },
+
     getters: {
         isAuthenticated(state) {
             return state.token != null;
         },
-        getImageLocationData(state) {
-            return (imageId) => state.imageLocationData[imageId] || {};
-          },
+        getLatitude(state) {
+            return state.latitude;
+        },
+        getLongitude(state) {
+            return state.longitude;
+        },
     },
     mutations: {
-        loginSuccesful(state, parameters) {
-            state.token = parameters.token;
-            state.Username = parameters.Username;
-            state.id = parameters.id;
-        },
+        // loginSuccesful(state, parameters) {
+        //     state.token = parameters.token;
+        //     state.Username = parameters.Username;
+        //     state.id = parameters.id;
+        // },
         logout(state) {
             state.token = null;
             state.Username = null;
             state.id = null;
         },
-        setLocationData(state, { imageId, locationData }) {
-            state.imageLocationData[imageId] = locationData;
-          },
+        setLatitude(state, latitude) {
+            state.latitude = latitude;
+        },
+        setLongitude(state, longitude) {
+            state.longitude = longitude;
+            console.log(state)
+            console.log(state.longitude)
+        },
     },
     actions: {
+
         autoLogin({ commit }) {
             let token = localStorage.getItem('token');
             let Username = localStorage.getItem('Username');
@@ -109,9 +123,6 @@ const store = createStore({
                     .catch((error) => reject(error));
             })
         },
-        setLocationData({ commit }, { imageId, locationData }) {
-            commit('setLocationData', { imageId, locationData });
-          },
     }
 });
 export default store;

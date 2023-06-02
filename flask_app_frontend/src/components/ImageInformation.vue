@@ -17,11 +17,11 @@
           </tr>
           <tr>
             <td>Locatie (long)</td>
-            <td>{{ imageLocationlong }}</td>
+            <td>{{ imageLocationlongtitude }}</td>
           </tr>
           <tr>
             <td>Locatie (Lat)</td>
-            <td>{{ imageLocationlat }}</td>
+            <td>{{ imageLocationlatitude }}</td>
           </tr>
           <tr>
             <td>Tijd</td>
@@ -53,7 +53,6 @@ import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import SavedModal from "../components/DeleteImageModal.vue";
 import { mapGetters } from "vuex";
-import exif from "exif-js";
 export default {
   data() {
     return {
@@ -63,18 +62,21 @@ export default {
       },
       imagePath: "",
       imageName: "",
-      imageLocationlong: "",
-      imageLocationlat: "",
+      imageLocationlongtitude: "",
+      imageLocationlatitude: "",
       imageTime: "",
       imageClassification: "",
       showModal: false,
-    locationData: null,
+      locationData: null,
     };
   },
- 
+  computed: {
+    ...mapGetters(["getLatitude", "getLongitude"]),
+  },
+
   mounted() {
     this.getImageIdFromUrl();
-    this.getImageById(this.imageName);    
+    this.getImageById(this.imageName);
   },
   methods: {
     navigateToCamera() {
@@ -83,12 +85,21 @@ export default {
     handleLocationUpdate(locationData) {
       this.locationData = locationData;
     },
-   
-    modifyDate(dateTime){
-        const dateString = dateTime;
-        const date = new Date(dateString);
-        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        return time;
+
+    modifyDate(dateTime) {
+      const dateString = dateTime;
+      const date = new Date(dateString);
+      const time = date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return time;
+    },
+    getLatitudeValue() {
+      return this.$store.getters.getLatitude;
+    },
+    getLongitudeValue() {
+      return this.$store.getters.getLongitude;
     },
 
     async getImageById(id) {
@@ -97,17 +108,18 @@ export default {
         if (imageFiles.hasOwnProperty(imagePath)) {
           const imageId = this.getImageIdFromName(id);
           if (imageId === id) {
-            const file = new File([], imagePath); 
+            const file = new File([], imagePath);
             const image = {
-              path: this.imagePath = imagePath.replace(/\d+(?=\.jpg$)/, imageId),
+              path: (this.imagePath = imagePath.replace(
+                /\d+(?=\.jpg$)/,
+                imageId
+              )),
               name: imageId,
-              dateCreated:  this.imageTime = file.lastModifiedDate,
+              dateCreated: (this.imageTime = file.lastModifiedDate),
             };
             this.imageTime = this.modifyDate(this.imageTime);
-            this.imageLocationlong = this.getImageLocationData(imageId).longitude;
-            this.imageLocationlat = this.getImageLocationData(imageId).latitude;
-            // this.imageLocation(image);
-            // this.extractCoordinates(imagePath);
+            this.imageLocationlatitude = this.getLongitudeValue();
+            this.imageLocationlongtitude = this.getLatitudeValue();
             return image;
           }
         }
@@ -127,13 +139,12 @@ export default {
     getImagefromFile() {
       return this.images.find((image) => image.name.split(".")[0] === imageId);
     },
-
   },
   components: {
     WelcomeItem,
     HelloWorld,
-    SavedModal, 
-    ...mapGetters(["getImageLocationData"]),
+    SavedModal,
+    // ...mapGetters(["getImageLocationData"]),
   },
 };
 </script>

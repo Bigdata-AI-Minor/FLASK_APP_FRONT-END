@@ -17,6 +17,7 @@
 </template>
 
 <script>
+// import store from "../store/store";
 export default {
   name: "Picture",
   data() {
@@ -50,28 +51,19 @@ export default {
           console.log(error);
         });
     },
-    emitLocationUpdate(longitude, latitude,imageId) {
-      const locationData = {
-        latitude: longitude,
-        longitude: latitude,
-      };
-      this.$store.dispatch("setLocationData", { imageId, locationData });
-    },
     takePicture() {
-      const context = this.canvas.getContext("2d");
-      const width = 1280; // Desired width (HD resolution)
-      const height = 720; // Desired height (HD resolution)
-      this.canvas.width = width;
-      this.canvas.height = height;
-      context.drawImage(this.video, 0, 0, width, height);
-      const imageData = this.canvas.toDataURL("image/jpeg");
-      this.downloadImage(imageData);
-
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          this.handleSuccess,
-          this.handleError
-        );
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.handleSuccess(position);
+          const context = this.canvas.getContext("2d");
+          const width = 1280; // Desired width (HD resolution)
+          const height = 720; // Desired height (HD resolution)
+          this.canvas.width = width;
+          this.canvas.height = height;
+          context.drawImage(this.video, 0, 0, width, height);
+          const imageData = this.canvas.toDataURL("image/jpeg");
+          this.downloadImage(imageData);
+        }, this.handleError);
       } else {
         console.log("Geolocation is not supported by this browser.");
       }
@@ -79,8 +71,6 @@ export default {
     handleSuccess(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-      const imageid = this.imageId
-      this.emitLocationUpdate(this.longitude, this.latitude,imageid);
     },
     handleError(error) {
       console.log("Error occurred while retrieving geolocation:", error);
@@ -89,9 +79,10 @@ export default {
       const link = document.createElement("a");
       link.href = imageData;
       link.download = this.imageId = `${this.generateRandomId()}.jpg`;
-      console.log(this.imageId);
-      link.setAttribute("data-latitude", this.latitude);
-      link.setAttribute("data-longitude", this.longitude);
+      link.id = this.imageId;
+      console.log(link.id);
+      this.$store.commit("setLongitude", this.longitude);
+      this.$store.commit("setLatitude", this.latitude);
       link.click();
     },
     // random Id gets generated based on current time combined with a random Id, of that number it takes the first ten
