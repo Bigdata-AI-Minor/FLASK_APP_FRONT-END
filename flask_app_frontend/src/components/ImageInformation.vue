@@ -2,9 +2,9 @@
   <div class="page-container">
     <div class="container">
       <img
-        alt="Welcome logo"
+        alt="Selected Image"
         class="logo"
-        src="@/assets/images/welcome.jpg"
+        :src="imagePath"
         width="200"
         height="200"
       />
@@ -13,23 +13,23 @@
         <table>
           <tr>
             <td>Naam</td>
-            <td>xxxx</td>
+            <td>{{ imageName }}</td>
           </tr>
           <tr>
-            <td>Locatie</td>
-            <td>xxxxxxxxx</td>
+            <td>Locatie (long)</td>
+            <td>{{ imageLocationlong }}</td>
           </tr>
           <tr>
-            <td>Locatie</td>
-            <td>xxxxxxxx</td>
+            <td>Locatie (Lat)</td>
+            <td>{{ imageLocationlat }}</td>
           </tr>
           <tr>
             <td>Tijd</td>
-            <td>xxxxxxx</td>
+            <td>{{ imageTime }}</td>
           </tr>
           <tr>
             <td>Classificatie</td>
-            <td>xxxxxxxx</td>
+            <td>{{ imageClassification }}</td>
           </tr>
         </table>
       </div>
@@ -37,39 +37,103 @@
         <a href="/library">
           <img src="@/assets/images/return.jpg" alt="cameraicon" />
         </a>
-        <a href="/camera">
-          <img src="@/assets/images/delete.jpg" alt="cameraicon" />
-        </a>
+        <img
+          src="@/assets/images/delete.jpg"
+          @click="showModal = true"
+          alt="cameraicon"
+        />
       </div>
     </div>
+    <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+import SavedModal from "../components/DeleteImageModal.vue";
+import { mapGetters } from "vuex";
+import exif from "exif-js";
 export default {
   data() {
     return {
-      isDropdownOpen: false,
-      selectedOption: null,
+      image: {
+        path: "",
+        name: "",
+      },
+      imagePath: "",
+      imageName: "",
+      imageLocationlong: "",
+      imageLocationlat: "",
+      imageTime: "",
+      imageClassification: "",
+      showModal: false,
+    locationData: null,
     };
+  },
+ 
+  mounted() {
+    this.getImageIdFromUrl();
+    this.getImageById(this.imageName);    
   },
   methods: {
     navigateToCamera() {
       this.$router.push("/camera");
     },
-    toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
+    handleLocationUpdate(locationData) {
+      this.locationData = locationData;
     },
-    selectOption(option) {
-      this.selectedOption = option;
-      this.isDropdownOpen = false;
+   
+    modifyDate(dateTime){
+        const dateString = dateTime;
+        const date = new Date(dateString);
+        const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return time;
     },
+
+    async getImageById(id) {
+      const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
+      for (const imagePath in imageFiles) {
+        if (imageFiles.hasOwnProperty(imagePath)) {
+          const imageId = this.getImageIdFromName(id);
+          if (imageId === id) {
+            const file = new File([], imagePath); 
+            const image = {
+              path: this.imagePath = imagePath.replace(/\d+(?=\.jpg$)/, imageId),
+              name: imageId,
+              dateCreated:  this.imageTime = file.lastModifiedDate,
+            };
+            this.imageTime = this.modifyDate(this.imageTime);
+            this.imageLocationlong = this.getImageLocationData(imageId).longitude;
+            this.imageLocationlat = this.getImageLocationData(imageId).latitude;
+            // this.imageLocation(image);
+            // this.extractCoordinates(imagePath);
+            return image;
+          }
+        }
+      }
+      return null;
+    },
+    getImageIdFromName(imageName) {
+      const id = imageName.split(".")[0];
+      return id;
+    },
+    getImageIdFromUrl() {
+      const currentPath = window.location.pathname;
+      const pathParts = currentPath.split("/");
+      const imageName = pathParts[pathParts.length - 1]; // Assumes the image ID is the last part of the URL
+      return (this.imageName = imageName);
+    },
+    getImagefromFile() {
+      return this.images.find((image) => image.name.split(".")[0] === imageId);
+    },
+
   },
   components: {
     WelcomeItem,
     HelloWorld,
+    SavedModal, 
+    ...mapGetters(["getImageLocationData"]),
   },
 };
 </script>
@@ -109,6 +173,7 @@ tr:nth-child(even) {
 }
 
 .logo {
+  width: 100%;
   display: block;
   margin: 0 auto;
   max-width: 100%;

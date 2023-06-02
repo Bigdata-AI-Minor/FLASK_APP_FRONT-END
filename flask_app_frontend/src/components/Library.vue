@@ -24,7 +24,10 @@
             :src="image.path"
             :alt="image.name"
             class="image"
-            @click="toggleSelection(image)"
+            @click="
+              toggleSelection(image);
+              navigateToImage(image);
+            "
           />
         </div>
       </div>
@@ -96,8 +99,23 @@ export default {
         }
       }
     },
+    navigateToImage(image) {
+      const imageName = this.removeExtension(image.name);
+      this.$router.push({
+        name: "imagedetails",
+        params: { image: imageName },
+      });
+    },
     toggleSelection(image) {
       image.selected = !image.selected;
+    },
+    removeExtension(fileName) {
+      const dotIndex = fileName.lastIndexOf(".");
+      if (dotIndex !== -1) {
+        return fileName.substring(0, dotIndex);
+      } else {
+        return fileName;
+      }
     },
     getFileNameFromPath(path) {
       return path.split("/").pop();
@@ -107,8 +125,8 @@ export default {
 </script>
 
 <style scoped>
-.upload{
-    padding: 1rem 2rem;
+.upload {
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   border-radius: 25px;
   color: white;

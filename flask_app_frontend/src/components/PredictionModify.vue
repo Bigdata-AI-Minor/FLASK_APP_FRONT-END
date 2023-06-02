@@ -8,7 +8,7 @@
         width="200"
         height="200"
       />
-      <h4 class="bold-text">Wat is wel het   materiaal</h4>
+      <h4 class="bold-text">Wat is wel het materiaal</h4>
       <div class="content">
         <div class="button-container">
           <div class="dropdown">
@@ -17,21 +17,29 @@
             </button>
             <ul class="dropdown-menu" :class="{ open: isDropdownOpen }">
               <li
-                v-for="(option, index) in options"
+                v-for="(classification, index) in trimmedClassifications"
                 :key="index"
-                @click="selectOption(option)"
+                @click="selectOption(classification)"
               >
-                {{ option }}
+                {{ classification }}
               </li>
             </ul>
           </div>
         </div>
         <div class="camera">
           <a href="/camera">
-            <img src="@/assets/images/return.jpg" style="float:left" alt="cameraicon" />
+            <img
+              src="@/assets/images/return.jpg"
+              style="float: left"
+              alt="cameraicon"
+            />
           </a>
-             <a href="/camera">
-            <img src="@/assets/images/correct.jpg" style="float:right" alt="cameraicon" />
+          <a href="/camera">
+            <img
+              src="@/assets/images/correct.jpg"
+              style="float: right"
+              alt="cameraicon"
+            />
           </a>
         </div>
       </div>
@@ -42,15 +50,41 @@
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+import axios from "../axios-auth";
 export default {
   data() {
     return {
+      classifications: Object,
+      trimmedClassifications: Array,
       isDropdownOpen: false,
-      options: ["Option 1", "Option 2", "Option 3", "Option 3"],
       selectedOption: null,
     };
   },
+  mounted() {
+    this.getClassifications();
+  },
   methods: {
+    getClassifications() {
+      axios
+        .get(`/classification/`, {
+          headers: {
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          this.classifications = response.data;
+          this.trimClassifications(response)
+        })
+        .catch((error) => console.log(error));
+    },
+
+    trimClassifications(response) {
+      const trimmedClassifications  = response.data.data.reduce((acc, item) => {
+      acc.push(item.classification);
+      return acc;
+    }, []);
+    this.trimmedClassifications = trimmedClassifications;
+    },
     navigateToCamera() {
       this.$router.push("/camera");
     },
@@ -106,7 +140,7 @@ export default {
 }
 
 .dropdown-menu {
-    border-radius: 10px;
+  border-radius: 10px;
   display: none;
   list-style: none;
   padding: 0;
@@ -114,7 +148,6 @@ export default {
   width: 200px;
   position: absolute;
   z-index: 1;
-  
 }
 
 .dropdown-menu.open {
@@ -122,7 +155,7 @@ export default {
 }
 
 .dropdown-menu li {
-    border-radius: 10px;
+  border-radius: 10px;
   padding: 5px;
   background-color: white;
   border-bottom: 1px solid #ddd;

@@ -156,7 +156,7 @@ export default {
   background-color: blue;
   width: 100%;
   color: white;
-  margin-top: 80px;
+  margin-top: 20px;
 }
 
 .col {

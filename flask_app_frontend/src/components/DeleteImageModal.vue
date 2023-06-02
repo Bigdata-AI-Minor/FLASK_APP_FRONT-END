@@ -3,10 +3,10 @@
     <div class="page-container">
       <div class="container">
         <div class="background-layer">
-          <h4>Wil je deze fotos uploaden</h4>
+          <h4>Wil je deze fotos verwijderen?</h4>
           <div class="close">
             <div class="button-container">
-              <button class="btnCorrect" @click="navigateToCamera"> 
+              <button class="btnCorrect" @click="navigateToCamera">
                 Correct
               </button>
               <button class="btnIncorrect" @click="$emit('close-modal')">
@@ -20,10 +20,65 @@
   </div>
 </template>
 
-<!-- TODO navigate to the bevistige van upload scherm en close modal after pressing exit -->
-
+<script>
+import WelcomeItem from "./WelcomeItem.vue";
+import HelloWorld from "./HelloWorld.vue";
+export default {
+  name: "Gallery",
+  data() {
+    return {
+      images: [],
+    };
+  },
+  components: {
+    WelcomeItem,
+    HelloWorld,
+  },
+  mounted() {
+    this.loadImages();
+  },
+  methods: {
+    loadImages() {
+      this.images = [];
+      const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
+      for (const imagePath in imageFiles) {
+        if (imageFiles.hasOwnProperty(imagePath)) {
+          const imageName = this.getFileNameFromPath(imagePath);
+          const image = {
+            path: imagePath,
+            name: imageName,
+          };
+          this.images.push(image);
+        }
+      }
+    },
+    deleteImage() {
+      const imagePath = "path/to/your/image.jpg";
+      fs.move(
+        imagePath,
+        fs.pathExistsSync(imagePath) ? fs.recyclerBinPath(imagePath) : imagePath
+      )
+        .then(() => {
+          console.log("Image moved to the recycle bin successfully");
+        })
+        .catch((error) => {
+          console.error("Failed to move image to the recycle bin:", error);
+        });
+    },
+    getFileNameFromPath(path) {
+      return path.split("/").pop();
+    },
+  },
+};
+</script>
 
 <style scoped>
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
 .btnIncorrect {
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -123,7 +178,6 @@ p {
 button {
   background-color: #ac003e;
   width: 150px;
-  height: 40px;
   color: white;
   font-size: 14px;
   border-radius: 16px;

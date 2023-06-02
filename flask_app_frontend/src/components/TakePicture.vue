@@ -24,6 +24,7 @@ export default {
       video: null,
       canvas: null,
       isMobile: false,
+      imageId: null,
     };
   },
   mounted() {
@@ -49,6 +50,13 @@ export default {
           console.log(error);
         });
     },
+    emitLocationUpdate(longitude, latitude,imageId) {
+      const locationData = {
+        latitude: longitude,
+        longitude: latitude,
+      };
+      this.$store.dispatch("setLocationData", { imageId, locationData });
+    },
     takePicture() {
       const context = this.canvas.getContext("2d");
       const width = 1280; // Desired width (HD resolution)
@@ -58,11 +66,32 @@ export default {
       context.drawImage(this.video, 0, 0, width, height);
       const imageData = this.canvas.toDataURL("image/jpeg");
       this.downloadImage(imageData);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          this.handleSuccess,
+          this.handleError
+        );
+      } else {
+        console.log("Geolocation is not supported by this browser.");
+      }
+    },
+    handleSuccess(position) {
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+      const imageid = this.imageId
+      this.emitLocationUpdate(this.longitude, this.latitude,imageid);
+    },
+    handleError(error) {
+      console.log("Error occurred while retrieving geolocation:", error);
     },
     downloadImage(imageData) {
       const link = document.createElement("a");
       link.href = imageData;
-      link.download = `${this.generateRandomId()}.jpg`;
+      link.download = this.imageId = `${this.generateRandomId()}.jpg`;
+      console.log(this.imageId);
+      link.setAttribute("data-latitude", this.latitude);
+      link.setAttribute("data-longitude", this.longitude);
       link.click();
     },
     // random Id gets generated based on current time combined with a random Id, of that number it takes the first ten

@@ -16,13 +16,17 @@ const store = createStore({
         return {
             token: null,
             Username: null,
-            id: null
+            id: null,
+            imageLocationData: {},
         }
     },
     getters: {
         isAuthenticated(state) {
             return state.token != null;
-        }
+        },
+        getImageLocationData(state) {
+            return (imageId) => state.imageLocationData[imageId] || {};
+          },
     },
     mutations: {
         loginSuccesful(state, parameters) {
@@ -34,7 +38,10 @@ const store = createStore({
             state.token = null;
             state.Username = null;
             state.id = null;
-        }
+        },
+        setLocationData(state, { imageId, locationData }) {
+            state.imageLocationData[imageId] = locationData;
+          },
     },
     actions: {
         autoLogin({ commit }) {
@@ -101,7 +108,10 @@ const store = createStore({
                     })
                     .catch((error) => reject(error));
             })
-        }
+        },
+        setLocationData({ commit }, { imageId, locationData }) {
+            commit('setLocationData', { imageId, locationData });
+          },
     }
 });
 export default store;
