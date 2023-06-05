@@ -10,6 +10,7 @@
   "dependencies": {
     "exif-js": "^2.3.0",
     "file-saver": "^2.0.5",
+    "fs": "^0.0.1-security",
     "fs-extra": "^11.1.1",
     "mitt": "^3.0.0",
     "vue": "^3.3.2",

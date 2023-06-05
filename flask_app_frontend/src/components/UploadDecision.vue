@@ -24,6 +24,11 @@
 
 
 <style scoped>
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
 .btnIncorrect {
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -120,12 +125,4 @@ p {
   margin: 20px 0;
 }
 
-button {
-  background-color: #ac003e;
-  width: 150px;
-  height: 40px;
-  color: white;
-  font-size: 14px;
-  border-radius: 16px;
-}
 </style>

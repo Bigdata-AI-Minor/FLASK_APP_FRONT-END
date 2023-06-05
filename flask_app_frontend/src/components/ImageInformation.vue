@@ -13,7 +13,7 @@
         <table>
           <tr>
             <td>Naam</td>
-            <td>{{ imageName }}</td>
+            <td>{{ imageName + ".jpg" }}</td>
           </tr>
           <tr>
             <td>Locatie (long)</td>
@@ -133,7 +133,7 @@ export default {
     getImageIdFromUrl() {
       const currentPath = window.location.pathname;
       const pathParts = currentPath.split("/");
-      const imageName = pathParts[pathParts.length - 1]; // Assumes the image ID is the last part of the URL
+      const imageName = pathParts[pathParts.length - 1]; 
       return (this.imageName = imageName);
     },
     getImagefromFile() {
@@ -144,7 +144,6 @@ export default {
     WelcomeItem,
     HelloWorld,
     SavedModal,
-    // ...mapGetters(["getImageLocationData"]),
   },
 };
 </script>
@@ -157,22 +156,17 @@ export default {
   margin-top: 110px;
 }
 table {
-  font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
 td,
 th {
-  border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
   padding-right: 50px;
 }
 
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
 .image-container {
   position: relative;
   margin-bottom: 0;

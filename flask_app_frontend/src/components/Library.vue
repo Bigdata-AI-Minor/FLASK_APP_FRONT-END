@@ -24,14 +24,13 @@
             :src="image.path"
             :alt="image.name"
             class="image"
-            @click="
-              toggleSelection(image);
-              navigateToImage(image);
-            "
+            :class="{ selected: image.selected }"
+            @click="toggleSelection(image)"
+            @dblclick="navigateToImage(image)"
           />
         </div>
       </div>
-      <button class="upload">Upload</button>
+      <button class="upload" @click="uploadImages; showModal = true ">Upload</button>
     </div>
     <footer>
       <div class="row">
@@ -64,22 +63,28 @@
         </div>
       </div>
     </footer>
+      <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+import axios from "../axios-auth";
+import SavedModal from '../components/UploadDecision.vue'
 export default {
   name: "Gallery",
   data() {
     return {
       images: [],
+      selectedImages: [],
+      showModal: false,
     };
   },
   components: {
     WelcomeItem,
     HelloWorld,
+    SavedModal,
   },
   mounted() {
     this.loadImages();
@@ -95,7 +100,18 @@ export default {
             path: imagePath,
             name: imageName,
           };
-          this.images.push(image);
+          const reader = new FileReader();
+
+          reader.onload = (event) => {
+            image.data = event.target.result; // Store the base64 encoded image data in the 'data' property
+            const base64Data = image.data.split(",")[1];
+            image.data = base64Data;
+            this.images.push(image); // Push the image object to the 'images' array
+          };
+          const blob = new Blob([imageFiles[imagePath]], {
+            type: "image/jpeg",
+          });
+          reader.readAsDataURL(blob); //
         }
       }
     },
@@ -108,6 +124,16 @@ export default {
     },
     toggleSelection(image) {
       image.selected = !image.selected;
+      if (image.selected) {
+        this.selectedImages.push(image); // Add selected image to the array
+      } else {
+        const index = this.selectedImages.findIndex(
+          (selectedImage) => selectedImage.path === image.path
+        );
+        if (index !== -1) {
+          this.selectedImages.splice(index, 1); // Remove deselected image from the array
+        }
+      }
     },
     removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
@@ -119,6 +145,42 @@ export default {
     },
     getFileNameFromPath(path) {
       return path.split("/").pop();
+    },
+    convertImageToBase64(image) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64String = event.target.result.split(",")[1];
+        console.log(base64String); // Base64 encoded image string
+      };
+      const blob = new Blob([image], { type: "image/jpeg" });
+      reader.readAsDataURL(blob);
+    },
+
+    uploadImages() {
+      const uploadPromises = this.selectedImages.map((image) => {
+        const fileData = image.data; // Adjust the property name as per your object structure
+        const trimmedString = fileData.substring(fileData.indexOf(",") + 1);
+        const fileBlob = new Blob([trimmedString], { type: "image/jpeg" });
+        const formData = new FormData();
+        formData.append("image_file", fileBlob, image.name);
+        return axios.post(`/bitstrings/`, formData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        });
+      });
+
+      Promise.all(uploadPromises)
+        .then((responses) => {
+          console.log(responses);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      this.selectedImages = []; // Clear the selectedImages array
     },
   },
 };
@@ -139,6 +201,9 @@ export default {
   width: 40px;
   height: 40px;
   margin-bottom: 15px;
+}
+.image.selected {
+  border: 6px solid yellow;
 }
 .upload {
   position: fixed; /* or position: absolute; */

@@ -35,6 +35,7 @@ export default {
     this.checkMobileDimensions();
     window.addEventListener("resize", this.checkMobileDimensions);
   },
+  
   beforeUnmount() {
     window.removeEventListener("resize", this.checkMobileDimensions);
   },
@@ -80,10 +81,25 @@ export default {
       link.href = imageData;
       link.download = this.imageId = `${this.generateRandomId()}.jpg`;
       link.id = this.imageId;
-      console.log(link.id);
       this.$store.commit("setLongitude", this.longitude);
       this.$store.commit("setLatitude", this.latitude);
       link.click();
+      this.navigateToImage(this.imageId)
+    },
+    navigateToImage(image) {
+      const imageName = this.removeExtension(image);
+      this.$router.push({
+        name: "prediction",
+        params: { image: imageName },
+      });
+    },
+     removeExtension(fileName) {
+      const dotIndex = fileName.lastIndexOf(".");
+      if (dotIndex !== -1) {
+        return fileName.substring(0, dotIndex);
+      } else {
+        return fileName;
+      }
     },
     // random Id gets generated based on current time combined with a random Id, of that number it takes the first ten
     generateRandomId() {

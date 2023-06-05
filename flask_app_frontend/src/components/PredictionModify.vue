@@ -1,19 +1,13 @@
 <template>
   <div class="page-container">
     <div class="container">
-      <img
-        alt="Welcome logo"
-        class="logo"
-        src="@/assets/images/welcome.jpg"
-        width="200"
-        height="200"
-      />
+      <img alt="Selected Image" class="logo" :src="imagePath" />
       <h4 class="bold-text">Wat is wel het materiaal</h4>
       <div class="content">
         <div class="button-container">
           <div class="dropdown">
             <button class="dropdown-toggle" @click="toggleDropdown">
-              materiaal
+                {{ selectedOption || 'materiaal' }}
             </button>
             <ul class="dropdown-menu" :class="{ open: isDropdownOpen }">
               <li
@@ -34,7 +28,7 @@
               alt="cameraicon"
             />
           </a>
-          <a href="/camera">
+          <a @click="navigateToPrediction">
             <img
               src="@/assets/images/correct.jpg"
               style="float: right"
@@ -58,10 +52,14 @@ export default {
       trimmedClassifications: Array,
       isDropdownOpen: false,
       selectedOption: null,
+      imagePath: "",
+      imageName: "",
     };
   },
   mounted() {
     this.getClassifications();
+    this.getImageIdFromUrl();
+    this.getImageById(this.imageName);
   },
   methods: {
     getClassifications() {
@@ -73,21 +71,66 @@ export default {
         })
         .then((response) => {
           this.classifications = response.data;
-          this.trimClassifications(response)
+          this.trimClassifications(response);
         })
         .catch((error) => console.log(error));
     },
 
     trimClassifications(response) {
-      const trimmedClassifications  = response.data.data.reduce((acc, item) => {
-      acc.push(item.classification);
-      return acc;
-    }, []);
-    this.trimmedClassifications = trimmedClassifications;
+      const trimmedClassifications = response.data.data.reduce((acc, item) => {
+        acc.push(item.classification);
+        return acc;
+      }, []);
+      this.trimmedClassifications = trimmedClassifications;
     },
-    navigateToCamera() {
-      this.$router.push("/camera");
+    async getImageById(id) {
+      const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
+      for (const imagePath in imageFiles) {
+        if (imageFiles.hasOwnProperty(imagePath)) {
+          const imageId = this.getImageIdFromName(id);
+          if (imageId === id) {
+            const file = new File([], imagePath);
+            const image = {
+              path: (this.imagePath = imagePath.replace(
+                /\d+(?=\.jpg$)/,
+                imageId
+              )),
+              name: imageId,
+              dateCreated: (this.imageTime = file.lastModifiedDate),
+            };
+            return image;
+          }
+        }
+      }
+      return null;
     },
+    getImageIdFromUrl() {
+      const currentPath = window.location.pathname;
+      const pathParts = currentPath.split("/");
+      const imageName = pathParts[pathParts.length - 1];
+      return (this.imageName = imageName);
+    },
+    getImageIdFromName(imageName) {
+      return imageName.split(".")[0];
+    },
+    navigateToPrediction() {
+      const imageName = this.removeExtension(this.imageName);
+      this.$router.push({
+        name: "prediction",
+        params: { image: imageName },
+      });
+    },
+    removeExtension(fileName) {
+      const dotIndex = fileName.lastIndexOf(".");
+      if (dotIndex !== -1) {
+        return fileName.substring(0, dotIndex);
+      } else {
+        return fileName;
+      }
+    },
+    // navigateToCamera() {
+    //   this.$router.push("/camera");
+    // },
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
@@ -239,6 +282,7 @@ export default {
   display: block;
   max-width: 100%;
   max-height: 100%;
+  margin-bottom: 20px;
 }
 
 nav a.router-link-exact-active {

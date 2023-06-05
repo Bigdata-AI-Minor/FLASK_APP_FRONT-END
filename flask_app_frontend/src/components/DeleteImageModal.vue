@@ -3,12 +3,10 @@
     <div class="page-container">
       <div class="container">
         <div class="background-layer">
-          <h4>Wil je deze fotos verwijderen?</h4>
+          <h4>Wil je deze foto verwijderen?</h4>
           <div class="close">
             <div class="button-container">
-              <button class="btnCorrect" @click="navigateToCamera">
-                Correct
-              </button>
+              <button class="btnCorrect" @click="deleteImage()">Correct</button>
               <button class="btnIncorrect" @click="$emit('close-modal')">
                 Incorrect
               </button>
@@ -23,11 +21,14 @@
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+// import fs from 'fs';
+import path from 'path';
 export default {
   name: "Gallery",
   data() {
     return {
       images: [],
+      imagePath: "",
     };
   },
   components: {
@@ -48,22 +49,24 @@ export default {
             path: imagePath,
             name: imageName,
           };
+          this.imagePath = imagePath;
           this.images.push(image);
         }
       }
     },
     deleteImage() {
-      const imagePath = "path/to/your/image.jpg";
-      fs.move(
-        imagePath,
-        fs.pathExistsSync(imagePath) ? fs.recyclerBinPath(imagePath) : imagePath
-      )
-        .then(() => {
-          console.log("Image moved to the recycle bin successfully");
-        })
-        .catch((error) => {
-          console.error("Failed to move image to the recycle bin:", error);
-        });
+    
+    //   const imagePath = this.imagePath;
+    //   fs.move(
+    //     imagePath,
+    //     fs.pathExistsSync(imagePath) ? fs.recyclerBinPath(imagePath) : imagePath
+    //   )
+    //     .then(() => {
+    //       console.log("Image moved to the recycle bin successfully");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Failed to move image to the recycle bin:", error);
+    //     });
     },
     getFileNameFromPath(path) {
       return path.split("/").pop();

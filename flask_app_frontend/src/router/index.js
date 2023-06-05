@@ -9,8 +9,8 @@ const router = createRouter({
     { path: '/library', name: 'library', component: () => import('../views/PhotoLibrary.vue')},
     { path: '/camera', name: 'camera', component: () => import('../views/CameraDisplay.vue')},
     { path: '/profile', name: 'profile', component: () => import('../views/Profile.vue')},
-    { path: '/prediction', name: 'prediction', component: () => import('../views/PredectionDecision.vue')},
-    { path: '/predictionmodify', name: 'predictionmodify', component: () => import('../views/PredectionChange.vue')},
+    { path: '/prediction/:image', name: 'prediction', component: () => import('../views/PredectionDecision.vue')},
+    { path: '/predictionmodify/:image', name: 'predictionmodify', component: () => import('../views/PredectionChange.vue')},
     { path: '/details/:image', name: 'imagedetails', component: () => import('../views/ImageDetails.vue')},
     { path: '/register', name: 'register', component: () => import('../views/RegisterView.vue')}
   ]
