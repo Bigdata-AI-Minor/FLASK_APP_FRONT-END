@@ -4,13 +4,13 @@
       Stream unavailable
     </video>
     <img
-      src="@/assets/images/fotoclick.jpg"
+      src="@/assets/images/fotoclick.png"
       alt="takepicture"
       @click="takePicture"
       class="takepicture"
     />
     <a href="/library" class="footer-link">
-      <img src="@/assets/images/fotoslogo.jpg" alt="Image 3" class="fotos" />
+      <img src="@/assets/images/fotoslibrary.png" alt="Image 3" class="fotos" />
     </a>
     <canvas ref="canvas" style="display: none"></canvas>
   </div>

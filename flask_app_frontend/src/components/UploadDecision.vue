@@ -17,13 +17,42 @@
         </div>
       </div>
     </div>
+    <!-- <SavedModal v-show="showModal" @close-modal="showModal = false" /> -->
   </div>
 </template>
 
 <!-- TODO navigate to the bevistige van upload scherm en close modal after pressing exit -->
+<script>
+import WelcomeItem from "./WelcomeItem.vue";
+import HelloWorld from "./HelloWorld.vue";
+import axios from "../axios-auth";
+// import SavedModal from '../components/UploadDecision.vue'
+export default {
+  name: "Gallery2",
+  data() {
+    return {
+      images: [],
+      selectedImages: [],
+      showModal: false,
+    };
+  },
+  components: {
+    WelcomeItem,
+    HelloWorld,
+    // SavedModal,
+  },
+  mounted() {
+    // this.loadImages();
+  },
 
+  
+};
+</script>
 
 <style scoped>
+h4{
+    text-align: center;
+}
 .button-container {
   display: flex;
   justify-content: space-between;

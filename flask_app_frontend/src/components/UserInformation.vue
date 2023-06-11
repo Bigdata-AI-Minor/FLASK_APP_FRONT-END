@@ -20,7 +20,7 @@
           </div>
           <div class="box">
              <label ><label class="user">Upload History</label></label>
-              <img src="@/assets/images/editlogo.jpg"  @click="showModal = true" alt="Exit modal" class="editlogo" />
+              <img src="@/assets/images/editlogo.jpg"  @click="showUpload = true" alt="Exit modal" class="editlogo" />
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
         <div class="col">
           <a href="/camera" class="footer-link">
             <img
-              src="@/assets/images/photolibrary/camera.jpg"
+              src="@/assets/images/photolibrary/camera.png"
               alt="Image 1"
               class="footer-image"
             />
@@ -56,7 +56,7 @@
         <div class="col">
           <a href="/profile" class="footer-link">
             <img
-              src="@/assets/images/photolibrary/profiel.jpg"
+              src="@/assets/images/photolibrary/profiel.png"
               alt="Image 3"
               class="footer-image"
             />
@@ -65,6 +65,7 @@
       </div>
     </footer>
     <SavedModal v-show="showModal" @close-modal="showModal = false" />
+    <UploadModal v-show="showUpload" @close-modal="showUpload = false" />
   </div>
 </template>
 
@@ -73,13 +74,15 @@ import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
 import SavedModal from '../components/PasswordModal.vue'
+import UploadModal from '../components/UploadHistoryModal.vue'
 export default {
   name: "Profile",
   data() {
     return {
       currentUser: Object,
       showModal: false,
-      username: localStorage.getItem("username")
+      showUpload: false,
+      username: localStorage.getItem("username"),
     };
   },
   methods: {
@@ -117,10 +120,9 @@ export default {
   components: {
     WelcomeItem,
     HelloWorld,
-    SavedModal
+    SavedModal,
+    UploadModal,
   },
-  
-  
 };
 </script>
 

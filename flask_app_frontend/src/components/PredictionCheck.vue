@@ -23,11 +23,13 @@
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
+import axios from "../axios-auth";
 export default {
   data() {
     return {
       imagePath: "",
       imageName: "",
+      image: Object,
     };
   },
   mounted() {
@@ -35,6 +37,50 @@ export default {
     this.getImageById(this.imageName);
   },
   methods: {
+    getPrediction(image) {
+      const fileData = image.data; // Adjust the property name as per your object structure
+      const trimmedString = fileData.substring(fileData.indexOf(",") + 1);
+      const fileBlob = new Blob([trimmedString], { type: "image/jpeg" });
+      const formData = new FormData();
+      formData.append("image_file", fileBlob, image.name);
+      axios
+        .post(`/prediction/`, formData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => (this.message = error.response.data.message));
+    },
+      getpredictionTest() {
+      const uploadPromises = this.selectedImages.map((image) => {
+        const fileData = image.data; // Adjust the property name as per your object structure
+        const trimmedString = fileData.substring(fileData.indexOf(",") + 1);
+        const fileBlob = new Blob([trimmedString], { type: "image/jpeg" });
+        const formData = new FormData();
+        formData.append("image_file", fileBlob, image.name);
+        return axios.post(`/prediction/`, formData, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        });
+      });
+
+      Promise.all(uploadPromises)
+        .then((responses) => {
+          console.log(responses);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     async getImageById(id) {
       const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
       for (const imagePath in imageFiles) {
@@ -42,15 +88,21 @@ export default {
           const imageId = this.getImageIdFromName(id);
           if (imageId === id) {
             const file = new File([], imagePath);
-            const image = {
-              path: (this.imagePath = imagePath.replace(
-                /\d+(?=\.jpg$)/,
-                imageId
-              )),
-              name: imageId,
-              dateCreated: (this.imageTime = file.lastModifiedDate),
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const image = {
+                path: (this.imagePath = imagePath.replace(
+                  /\d+(?=\.jpg$)/,
+                  imageId
+                )),
+                name: imageId,
+                dateCreated: (this.imageTime = file.lastModifiedDate),
+                data: event.target.result,
+              };
+              this.image = image;
+              this.getPrediction(image);
             };
-            return image;
+            reader.readAsDataURL(file);
           }
         }
       }
@@ -69,7 +121,7 @@ export default {
     navigateToCamera() {
       this.$router.push("/camera");
     },
-     removeExtension(fileName) {
+    removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
       if (dotIndex !== -1) {
         return fileName.substring(0, dotIndex);

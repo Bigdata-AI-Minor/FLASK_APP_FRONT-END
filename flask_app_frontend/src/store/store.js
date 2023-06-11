@@ -52,8 +52,6 @@ const store = createStore({
         },
         setLongitude(state, longitude) {
             state.longitude = longitude;
-            console.log(state)
-            console.log(state.longitude)
         },
     },
     actions: {

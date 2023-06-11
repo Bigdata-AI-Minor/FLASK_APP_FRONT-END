@@ -30,14 +30,15 @@
           />
         </div>
       </div>
-      <button class="upload" @click="uploadImages; showModal = true ">Upload</button>
+      <button class="upload" @click="handleUpload">Upload</button>
+      <!-- <button class="upload" @click="uploadImages; showModal = true ">Upload</button> -->
     </div>
     <footer>
       <div class="row">
         <div class="col">
           <a href="/camera" class="footer-link">
             <img
-              src="@/assets/images/photolibrary/camera.jpg"
+              src="@/assets/images/photolibrary/camera.png"
               alt="Image 1"
               class="footer-image"
             />
@@ -55,7 +56,7 @@
         <div class="col">
           <a href="/profile" class="footer-link">
             <img
-              src="@/assets/images/photolibrary/profiel.jpg"
+              src="@/assets/images/photolibrary/profiel.png"
               alt="Image 3"
               class="footer-image"
             />
@@ -90,6 +91,10 @@ export default {
     this.loadImages();
   },
   methods: {
+     handleUpload() {
+    this.uploadImages(); // Invoke the uploadImages method
+    this.showModal = true; // Set showModal to true
+  },
     loadImages() {
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
@@ -101,7 +106,6 @@ export default {
             name: imageName,
           };
           const reader = new FileReader();
-
           reader.onload = (event) => {
             image.data = event.target.result; // Store the base64 encoded image data in the 'data' property
             const base64Data = image.data.split(",")[1];
@@ -179,7 +183,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-
       this.selectedImages = []; // Clear the selectedImages array
     },
   },
@@ -187,6 +190,7 @@ export default {
 </script>
 
 <style scoped>
+
 .upload {
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -203,7 +207,7 @@ export default {
   margin-bottom: 15px;
 }
 .image.selected {
-  border: 6px solid yellow;
+  border: 6px solid blue;
 }
 .upload {
   position: fixed; /* or position: absolute; */
@@ -243,11 +247,13 @@ h5 {
   font-size: 12px;
   text-align: center;
 }
+h3{
+  text-align: center;
+}
 
 .container {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
   position: relative;
   margin-top: 30px;
