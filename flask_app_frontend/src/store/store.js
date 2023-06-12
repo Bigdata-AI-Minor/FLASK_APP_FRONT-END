@@ -22,6 +22,13 @@ const store = createStore({
             imageLocationData: {},
             latitude: null,
             longitude: null,
+            Imagedata: null,
+            imagefIle: null,
+            imageInformation: [],
+            deletedImages: [],
+            fotoPredictions: [],
+            uploadHistory: [],
+            selectedImages: [],
         }
     },
 
@@ -35,13 +42,30 @@ const store = createStore({
         getLongitude(state) {
             return state.longitude;
         },
+        getCapturedImage(state) {
+            return state.Imagedata;
+        },
+        getImageFIle(state) {
+            return state.imagefIle;
+        },
+        getImageInformation(state) {
+            return state.imageInformation;
+        },
+        getdeletedImages(state) {
+            return state.deletedImages;
+        },
+        getfotoPredictions(state) {
+            return state.fotoPredictions;
+        },
+        getUploadHistory(state) {
+            return state.uploadHistory;
+        },
+        getSelectedImages(state) {
+            return state.selectedImages;
+        },
+
     },
     mutations: {
-        // loginSuccesful(state, parameters) {
-        //     state.token = parameters.token;
-        //     state.Username = parameters.Username;
-        //     state.id = parameters.id;
-        // },
         logout(state) {
             state.token = null;
             state.Username = null;
@@ -53,6 +77,35 @@ const store = createStore({
         setLongitude(state, longitude) {
             state.longitude = longitude;
         },
+        setCapturedImage(state, Imagedata) {
+            state.Imagedata = Imagedata;
+        },
+        setImageFIle(state, imagefIle) {
+            state.imagefIle = imagefIle;
+        },
+        setImageInformation(state, imageInformation) {
+            state.imageInformation.push(imageInformation);
+        },
+        setDeletedImages(state, deletedImage) {
+            state.deletedImages.push(deletedImage);
+        },
+        setUploadHistory(state, history) {
+            state.uploadHistory.push(history);
+        },
+        setSelectedImages(state, selectedImages) {
+            const exists = state.selectedImages.some((image) => image.name === selectedImages.name);
+            if (!exists) {
+              state.selectedImages.push(selectedImages);
+            }
+            // state.selectedImages.push(selectedImages);
+        },
+        setFotoPrediction(state, { name, prediction }) {
+            const foto = state.fotoPredictions.find((foto) => foto.name === name);
+            if (foto) {
+                foto.prediction = prediction;
+            }
+        },
+
     },
     actions: {
 
@@ -86,6 +139,9 @@ const store = createStore({
                     .catch((error) => reject(error));
             })
 
+        },
+        setImageInformation({ commit }, imageInformation) {
+            commit('imageInformation', imageInformation);
         },
         login({ commit }, parameters) {
             return new Promise((resolve, reject) => {

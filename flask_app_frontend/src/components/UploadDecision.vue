@@ -26,7 +26,7 @@
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
-// import SavedModal from '../components/UploadDecision.vue'
+import SavedModal from '../components/UploadConformation.vue'
 export default {
   name: "Gallery2",
   data() {

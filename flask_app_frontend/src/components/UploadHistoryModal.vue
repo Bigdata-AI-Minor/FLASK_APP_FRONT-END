@@ -5,17 +5,27 @@
         <div class="background-layer">
           <div class="closemodal" @click="$emit('close-modal')">
             <img
-              src="@/assets/images/exit.jpg"
+              src="@/assets/images/exit.png"
               alt="Exit modal"
               class="fotos"
             />
           </div>
           <h4>Upload History</h4>
-          <label for="username">Oude wachtwoord</label>
-          <div class="form-floating">
-            <input
-              class="form-control"
-            />
+          <div class="content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Amount</th>
+                  <th>Upload Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in history" :key="index">
+                  <td>{{ item.amount }}</td>
+                  <td>{{ formatDate(item.uploadDate)}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -24,20 +34,59 @@
 </template>
 
 <script>
-import axios from "../axios-auth";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       showModal: false,
-       message: "",
+      message: "",
+      Date: "",
+      Amount: "",
     };
   },
-  components: {
+  computed: {
+    ...mapGetters(["getUploadHistory"]),
+    history() {
+      return this.$store.getters.getUploadHistory;
+    },
   },
+  mounted() {
+    // this.displayHistory();
+  },
+  methods: {
+    getInformation() {
+      return this.$store.getters.getUploadHistory;
+    },
+    formatDate(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleDateString();
+    },
+    displayHistory() {
+      const history = this.getInformation();
+
+      history.forEach((item, index) => {
+        // console.log(index + ":");
+        // console.log(item);
+        console.log(item.amount);
+        console.log(item.uploadDate);
+      });
+    },
+  },
+  components: {},
 };
 </script>
 
 <style scoped>
+h4 {
+  text-align: center;
+}
+td,
+th {
+  text-align: left;
+  padding: 8px;
+  padding-right: 50px;
+}
+
 label {
   display: block;
   margin-top: 1rem;

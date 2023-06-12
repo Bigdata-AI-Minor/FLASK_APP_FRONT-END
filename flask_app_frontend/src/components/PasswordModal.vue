@@ -5,7 +5,7 @@
         <div class="background-layer">
           <div class="closemodal" @click="$emit('close-modal')">
             <img
-              src="@/assets/images/exit.jpg"
+              src="@/assets/images/exit.png"
               alt="Exit modal"
               class="fotos"
             />

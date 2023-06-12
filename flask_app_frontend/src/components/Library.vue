@@ -20,6 +20,7 @@
       </div>
       <div class="row">
         <div v-for="(image, index) in images" :key="index" class="col">
+          <div class="image-prediction">{{ image.prediction }}</div>
           <img
             :src="image.path"
             :alt="image.name"
@@ -64,7 +65,7 @@
         </div>
       </div>
     </footer>
-      <SavedModal v-show="showModal" @close-modal="showModal = false" />
+    <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
@@ -72,7 +73,8 @@
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
-import SavedModal from '../components/UploadDecision.vue'
+import SavedModal from "../components/UploadDecision.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Gallery",
   data() {
@@ -80,6 +82,8 @@ export default {
       images: [],
       selectedImages: [],
       showModal: false,
+      newimages: [],
+      imagepredictions: [],
     };
   },
   components: {
@@ -87,15 +91,30 @@ export default {
     HelloWorld,
     SavedModal,
   },
+  computed: {
+    ...mapGetters(["getImageInformation" , "getfotoPredictions"]),
+  },
   mounted() {
     this.loadImages();
   },
   methods: {
-     handleUpload() {
-    this.uploadImages(); // Invoke the uploadImages method
-    this.showModal = true; // Set showModal to true
-  },
+    getInformation() {
+      return this.$store.getters.getImageInformation;
+    },
+     getFilteredImages() {
+      return this.$store.getters.getSelectedImages;
+    },
+    // get imageprediction is maybe not necessary
+    getPrediction() {
+      return this.$store.getters.getfotoPredictions;
+    },
+    handleUpload() {
+      this.uploadImages();  
+      this.showModal = true; 
+    },
     loadImages() {
+      this.newimages = this.getInformation();
+      // this.imagepredictions = this.getPrediction();
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
       for (const imagePath in imageFiles) {
@@ -104,13 +123,27 @@ export default {
           const image = {
             path: imagePath,
             name: imageName,
+            prediction: null,
           };
+
+          for (let i = 0; i < this.newimages.length; i++) {
+            const imageData = this.newimages[i];
+            if (imageData.name === imageName){
+              image.prediction = imageData.prediction;
+            }
+          }
+
           const reader = new FileReader();
           reader.onload = (event) => {
-            image.data = event.target.result; // Store the base64 encoded image data in the 'data' property
+            image.data = event.target.result;
             const base64Data = image.data.split(",")[1];
             image.data = base64Data;
-            this.images.push(image); // Push the image object to the 'images' array
+            // here will check if it exists in the selected aray
+            const uploadedImages = this.getFilteredImages();
+            const exists = uploadedImages.some((image) => image.name === imageName);
+            if (!exists) {
+              this.images.push(image);
+            } 
           };
           const blob = new Blob([imageFiles[imagePath]], {
             type: "image/jpeg",
@@ -150,18 +183,9 @@ export default {
     getFileNameFromPath(path) {
       return path.split("/").pop();
     },
-    convertImageToBase64(image) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const base64String = event.target.result.split(",")[1];
-        console.log(base64String); // Base64 encoded image string
-      };
-      const blob = new Blob([image], { type: "image/jpeg" });
-      reader.readAsDataURL(blob);
-    },
-
     uploadImages() {
       const uploadPromises = this.selectedImages.map((image) => {
+        this.$store.commit("setSelectedImages", image);
         const fileData = image.data; // Adjust the property name as per your object structure
         const trimmedString = fileData.substring(fileData.indexOf(",") + 1);
         const fileBlob = new Blob([trimmedString], { type: "image/jpeg" });
@@ -183,6 +207,12 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+         const History = {
+                amount: this.selectedImages.length,
+                uploadDate: Date.now(),
+              };
+     
+      this.$store.commit("setUploadHistory", History);
       this.selectedImages = []; // Clear the selectedImages array
     },
   },
@@ -190,7 +220,6 @@ export default {
 </script>
 
 <style scoped>
-
 .upload {
   padding: 1rem 2rem;
   font-size: 1.2rem;
@@ -202,9 +231,10 @@ export default {
   width: -webkit-fill-available;
 }
 .image {
-  width: 40px;
-  height: 40px;
-  margin-bottom: 15px;
+  width: 80px;
+  height: 80px;
+  border-radius: 15px;
+  /* margin-bottom: 15px; */
 }
 .image.selected {
   border: 6px solid blue;
@@ -247,7 +277,7 @@ h5 {
   font-size: 12px;
   text-align: center;
 }
-h3{
+h3 {
   text-align: center;
 }
 

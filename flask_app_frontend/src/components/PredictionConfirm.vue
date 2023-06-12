@@ -2,15 +2,11 @@
   <div class="page-container">
     <div class="container">
       <img alt="Selected Image" class="logo" :src="imagePath" />
-
-      <div class="error-box mb-3" v-if="message">
-        <label class="error-msg">{{ message }}</label>
-      </div>
-      <h4 class="bold-text" v-if="!message && prediction !== ''">
+      <h4 class="bold-text">
         Voorspelling: <span class="bold">{{ prediction }}</span> klopt dit?
       </h4>
       <div class="content">
-        <div class="button-container" v-if="!message && prediction !== ''">
+        <div class="button-container">
           <button class="btnCorrect" @click="navigateToCamera">Correct</button>
           <button class="btnIncorrect" @click="navigateToPredicionChange">
             Incorrect
@@ -29,7 +25,6 @@ import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
 import { mapGetters } from "vuex";
-import store from "../store/store";
 export default {
   data() {
     return {
@@ -46,23 +41,44 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getCapturedImage", "getImageFIle"]),
+    ...mapGetters(["getImageInformation", "getImageFIle"]),
   },
 
   mounted() {
     this.getImageIdFromUrl();
     this.loadImages(this.imageName);
+    this.applyChange();
   },
   methods: {
     getFileNameFromPath(path) {
       return path.split("/").pop();
     },
+    getInformation() {
+      return this.$store.getters.getImageInformation;
+    },
+
+    //   getInformation() {
+    //   return this.$store.getters.getImageInformation;
+    // },
     getFile() {
       return this.$store.getters.getImageFIle;
     },
 
+    applyChange() {
+      const value = this.getInformation();
+      const name = this.getImageIdFromUrl() + ".jpg";
+      for (let i = 0; i < value.length; i++) {
+        const foto = value[i];
+        if (foto.name === name) {
+          this.prediction = foto.prediction;
+          this.$store.commit("setFotoPrediction", { name, prediction: foto.prediction });
+          return;
+        }
+      }
+    },
+
     loadImages(id) {
-      const testfile = this.getFile();
+    const testfile = this.getFile();
       this.testimage = testfile;
       this.test = [];
       this.capturedImageData = this.getTakenImage();
@@ -95,7 +111,7 @@ export default {
               });
               if (!isImageExists) {
                 this.test.push(this.testimage);
-                this.getprediction();
+                // this.getprediction();
               }
             };
             const blob = new Blob([imageFiles[imagePath]], {
@@ -109,43 +125,6 @@ export default {
     },
     getTakenImage() {
       return this.$store.getters.getCapturedImage;
-    },
-    getprediction() {
-      console.log(this.testimage);
-      const uploadPromises = this.test.map(() => {
-        const formData = new FormData();
-        formData.append("image_file", this.testimage);
-        return axios.post(`/prediction/`, formData, {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        });
-      });
-
-      Promise.all(uploadPromises)
-        .then((responses) => {
-          const targetarray = responses.map((response) => response.data);
-          if (targetarray.length > 0) {
-            const predictionObject = targetarray[0];
-            if (predictionObject.hasOwnProperty("prediction")) {
-              this.prediction = predictionObject.prediction;
-              console.log(this.testimage);
-              console.log(this.testimage.name);
-              const imageData = {
-                image: this.testimage,
-                prediction: this.prediction,
-                name:this.testimage.name
-              };
-                this.$store.commit("setImageInformation", imageData);
-            }
-          }
-        })
-        .catch((error) => {
-          this.message = error.response.data.message;
-          console.log(error);
-        });
     },
 
     getImageIdFromUrl() {

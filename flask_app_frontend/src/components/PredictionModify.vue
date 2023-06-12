@@ -7,7 +7,7 @@
         <div class="button-container">
           <div class="dropdown">
             <button class="dropdown-toggle" @click="toggleDropdown">
-                {{ selectedOption || 'materiaal' }}
+              {{ selectedOption || "materiaal" }}
             </button>
             <ul class="dropdown-menu" :class="{ open: isDropdownOpen }">
               <li
@@ -45,6 +45,7 @@
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
 import axios from "../axios-auth";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -56,12 +57,21 @@ export default {
       imageName: "",
     };
   },
+
   mounted() {
     this.getClassifications();
     this.getImageIdFromUrl();
     this.getImageById(this.imageName);
+    this.updateClassification();
+  },
+  computed: {
+    ...mapGetters(["getImageInformation"]),
   },
   methods: {
+    getInformation() {
+      return this.$store.getters.getImageInformation;
+    },
+
     getClassifications() {
       axios
         .get(`/classification/`, {
@@ -83,6 +93,20 @@ export default {
       }, []);
       this.trimmedClassifications = trimmedClassifications;
     },
+
+    updateClassification() {
+      const value = this.getInformation();
+      const selectedValue = this.selectedOption;
+      const name = this.getImageIdFromUrl() + ".jpg";
+      for (let i = 0; i < value.length; i++) {
+        const foto = value[i];
+        if(foto.name == name){
+          foto.prediction = selectedValue;
+          return;
+        }
+      }
+    },
+
     async getImageById(id) {
       const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
       for (const imagePath in imageFiles) {
@@ -114,9 +138,10 @@ export default {
       return imageName.split(".")[0];
     },
     navigateToPrediction() {
+      this.updateClassification();
       const imageName = this.removeExtension(this.imageName);
       this.$router.push({
-        name: "prediction",
+        name: "predictionconfirm",
         params: { image: imageName },
       });
     },

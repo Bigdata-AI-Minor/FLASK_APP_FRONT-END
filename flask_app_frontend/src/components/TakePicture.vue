@@ -26,6 +26,8 @@ export default {
       canvas: null,
       isMobile: false,
       imageId: null,
+      imagedata: null,
+      imagefile: null,
     };
   },
   mounted() {
@@ -35,7 +37,7 @@ export default {
     this.checkMobileDimensions();
     window.addEventListener("resize", this.checkMobileDimensions);
   },
-  
+
   beforeUnmount() {
     window.removeEventListener("resize", this.checkMobileDimensions);
   },
@@ -52,6 +54,24 @@ export default {
           console.log(error);
         });
     },
+    convertToFile(base64Data, fileName, fileType) {
+      const base64WithoutPrefix = base64Data.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+      const byteCharacters = atob(base64WithoutPrefix);
+      // const byteCharacters = atob(base64Data);
+      const byteArrays = [];
+      for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+      const blob = new Blob(byteArrays, { type: fileType });
+      const file = new File([blob], fileName, { type: fileType });
+      return file;
+    },
     takePicture() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -63,7 +83,16 @@ export default {
           this.canvas.height = height;
           context.drawImage(this.video, 0, 0, width, height);
           const imageData = this.canvas.toDataURL("image/jpeg");
-          this.downloadImage(imageData);
+          this.imagedata = imageData;
+          this.$store.commit("setCapturedImage", imageData);
+          const prefix = "data:image/jpeg;base64,";
+          const encodedData = imageData.startsWith(prefix)
+            ? imageData
+            : prefix + imageData;
+          this.imageId = `${this.generateRandomId()}.jpg`
+        const file = this.convertToFile(encodedData, this.imageId, "image/jpeg");
+        this.imagefile = file;
+        this.downloadImage(imageData);
         }, this.handleError);
       } else {
         console.log("Geolocation is not supported by this browser.");
@@ -77,15 +106,18 @@ export default {
       console.log("Error occurred while retrieving geolocation:", error);
     },
     downloadImage(imageData) {
+      console.log(this.imagefile);
       const link = document.createElement("a");
       link.href = imageData;
-      link.download = this.imageId = `${this.generateRandomId()}.jpg`;
+      link.download = this.imageId;
       link.id = this.imageId;
       this.$store.commit("setLongitude", this.longitude);
       this.$store.commit("setLatitude", this.latitude);
+      this.$store.commit("setImageFIle", this.imagefile);
       link.click();
-      this.navigateToImage(this.imageId)
+      this.navigateToImage(this.imageId);
     },
+
     navigateToImage(image) {
       const imageName = this.removeExtension(image);
       this.$router.push({
@@ -93,7 +125,7 @@ export default {
         params: { image: imageName },
       });
     },
-     removeExtension(fileName) {
+    removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
       if (dotIndex !== -1) {
         return fileName.substring(0, dotIndex);

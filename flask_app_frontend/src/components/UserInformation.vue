@@ -20,7 +20,7 @@
           </div>
           <div class="box">
              <label ><label class="user">Upload History</label></label>
-              <img src="@/assets/images/editlogo.jpg"  @click="showUpload = true" alt="Exit modal" class="editlogo" />
+              <img src="@/assets/images/eyeIcon.png"   @click="showUpload = true" alt="Exit modal" class="editlogo2" />
           </div>
         </div>
       </div>
@@ -132,6 +132,10 @@ export default {
 }
 
 .editlogo{
+  margin-left: auto;
+}
+.editlogo2{
+  height: 33px;
   margin-left: auto;
 }
 .form-signin{
