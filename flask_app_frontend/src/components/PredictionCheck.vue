@@ -138,6 +138,7 @@ export default {
                 prediction: this.prediction,
                 name:this.testimage.name
               };
+              console.log(imageData);
                 this.$store.commit("setImageInformation", imageData);
             }
           }

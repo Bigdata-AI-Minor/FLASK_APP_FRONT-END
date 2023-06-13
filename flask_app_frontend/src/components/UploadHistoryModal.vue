@@ -45,9 +45,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getUploadHistory"]),
+    ...mapGetters(["getTest"]),
     history() {
-      return this.$store.getters.getUploadHistory;
+      return this.$store.getters.getTest;
     },
   },
   mounted() {

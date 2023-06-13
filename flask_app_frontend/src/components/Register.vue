@@ -26,8 +26,10 @@
                 v-model="this.Password"
               />
             </div>
-           <div class="error-box mb-3">
-              <label class="error-msg">{{ message }}</label>
+            <div class="error-box mb-3">
+              <label :class="{ success: isSuccess, error: !isSuccess }">{{
+                message
+              }}</label>
             </div>
             <button type="button" @click="register()" class="btnLogin">
               Register
@@ -52,36 +54,50 @@ export default {
       Username: "",
       Password: "",
       message: "",
+      isSuccess: null,
     };
   },
   methods: {
     register() {
-      axios.post(`/users/`, {
+      axios
+        .post(
+          `/users/`,
+          {
             Username: this.Username,
             Password: this.Password,
-      },{
-          headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                            'Access-Control-Allow-Origin': '*',
-                    }
-        })
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
         .then((res) => {
-        this.currentUser = res.data;
-        this.message = res.data.message
-        this.$router.push("/login");
+          this.currentUser = res.data;
+          this.message = res.data.message;
+          this.isSuccess = true;
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 2000);
         })
-        .catch((error) => this.message = error.response.data.message);
-    }
-    
+        .catch((error) => {
+          this.message = error.response.data.message;
+          this.isSuccess = false;
+        });
+    },
   },
-  
 };
 </script>
 
 <style scoped>
-.error-msg{
+.error {
   color: red;
+}
+
+.success {
+  color: green; 
 }
 .page-container {
   display: flex;
@@ -138,7 +154,7 @@ export default {
 label {
   display: block;
   margin-top: 1rem;
-  font: 0.9rem 'Fira Sans', sans-serif;
+  font: 0.9rem "Fira Sans", sans-serif;
 }
 
 @media (min-width: 1024px) {

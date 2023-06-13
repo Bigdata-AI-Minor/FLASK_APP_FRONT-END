@@ -55,7 +55,10 @@ export default {
         });
     },
     convertToFile(base64Data, fileName, fileType) {
-      const base64WithoutPrefix = base64Data.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+      const base64WithoutPrefix = base64Data.replace(
+        /^data:image\/(png|jpeg|jpg);base64,/,
+        ""
+      );
       const byteCharacters = atob(base64WithoutPrefix);
       // const byteCharacters = atob(base64Data);
       const byteArrays = [];
@@ -89,10 +92,14 @@ export default {
           const encodedData = imageData.startsWith(prefix)
             ? imageData
             : prefix + imageData;
-          this.imageId = `${this.generateRandomId()}.jpg`
-        const file = this.convertToFile(encodedData, this.imageId, "image/jpeg");
-        this.imagefile = file;
-        this.downloadImage(imageData);
+          this.imageId = `${this.generateRandomId()}.jpg`;
+          const file = this.convertToFile(
+            encodedData,
+            this.imageId,
+            "image/jpeg"
+          );
+          this.imagefile = file;
+          this.downloadImage(imageData);
         }, this.handleError);
       } else {
         console.log("Geolocation is not supported by this browser.");
@@ -117,13 +124,15 @@ export default {
       link.click();
       this.navigateToImage(this.imageId);
     },
-
+    // zet een delay van 2 seconden zodat er tijd is om de image te downloaden en vervolgens te laden
     navigateToImage(image) {
       const imageName = this.removeExtension(image);
-      this.$router.push({
-        name: "prediction",
-        params: { image: imageName },
-      });
+      setTimeout(() => {
+        this.$router.push({
+          name: "prediction",
+          params: { image: imageName },
+        });
+      }, 2000);
     },
     removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");

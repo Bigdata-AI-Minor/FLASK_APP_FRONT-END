@@ -6,7 +6,7 @@
           <h4>Wil je deze foto verwijderen?</h4>
           <div class="close">
             <div class="button-container">
-              <button class="btnCorrect" @click="deleteImage()">Correct</button>
+              <button class="btnCorrect" @click="handleUpload()">Correct</button>
               <button class="btnIncorrect" @click="$emit('close-modal')">
                 Incorrect
               </button>
@@ -15,15 +15,15 @@
         </div>
       </div>
     </div>
+    <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
 <script>
 import WelcomeItem from "./WelcomeItem.vue";
 import HelloWorld from "./HelloWorld.vue";
-// import ViteFS from 'vite-fs'
-// import fs from 'fs-extra';
-import path from "path";
+import SavedModal from "../components/DeleteImageConformation.vue";
+import { mapGetters } from "vuex";
 export default {
   name: "Gallery",
   data() {
@@ -31,16 +31,22 @@ export default {
       images: [],
       imagePath: "",
       newPath: "",
+      showModal:false,
     };
   },
   components: {
     WelcomeItem,
     HelloWorld,
+    SavedModal
   },
   mounted() {
     this.loadImages();
   },
   methods: {
+     handleUpload() {
+      this.deleteImage();  
+      this.showModal = true; 
+    },
     loadImages() {
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
@@ -56,118 +62,21 @@ export default {
         }
       }
     },
-    // deleteImage() {
-    //   this.images = [];
-    //   const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
-    //   window
-    //     .showDirectoryPicker()
-    //     .then((dirHandle) => {
-    //       const deletePromises = [];
-    //       for (const imagePath in imageFiles) {
-    //         if (imageFiles.hasOwnProperty(imagePath)) {
-    //           const imageName = this.getFileNameFromPath(imagePath);
-    //           const image = {
-    //             path: imagePath,
-    //             name: imageName,
-    //           };
-    //           console.log(dirHandle);
-    //           const deletePromise = this.deleteFileLocally(dirHandle, imagePath)
-    //             .then(() => {
-    //               this.images.push(image);
-    //             })
-    //             .catch((error) => {
-    //               console.error(error);
-    //             });
-
-    //           deletePromises.push(deletePromise);
-    //           console.log(deletePromise);
-    //         }
-    //       }
-
-    //       Promise.all(deletePromises)
-    //         .then(() => {
-    //           //   this.$router.push("/library");
-    //         })
-    //         .catch((error) => {
-    //           console.error(error);
-    //         });
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
-    //   //   this.$router.push("/library");
-    // },
-    // it fails in this method
-
-    // async deleteFileLocally(dirHandle, fileName) {
-    //   try {
-    //     const fileHandle = await dirHandle.getFileHandle(fileName, {
-    //       create: false,
-    //     });
-    //     await fileHandle.remove();
-    //   } catch (error) {
-    //     console.error(error);
-    //     throw new Error("Failed to delete the file.");
-    //   }
-    // },
-    async deleteImage(path) {
-        path = this.imagePath;
-      try {
-        const response = await fetch(path);
-        if (response.ok) {
-          const fileContent = await response.text();
-            response.
-          console.log("i can read the file");
-        } else {
-          console.error("Failed to read file:", response.status);
+    deleteImage() {
+      this.images = [];
+      const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
+      const deletePromises = [];
+      for (const imagePath in imageFiles) {
+        if (imageFiles.hasOwnProperty(imagePath)) {
+          const imageName = this.getFileNameFromPath(imagePath);
+          const image = {
+            path: imagePath,
+            name: imageName,
+          };
+          this.$store.commit("setSelectedImages", image);
         }
-      } catch (error) {
-        console.error("Error reading file:", error);
       }
     },
-
-    // async deleteImage() {
-    //   try {
-    //     const sourcePath = this.imagePath;
-    //     const targetPath = sourcePath.replace("localimages", "deletedimages");
-
-    //     const fileHandle = await window.showDirectoryPicker();
-    //     const targetDirectory = await this.resolveDirectory(
-    //       fileHandle,
-    //       targetPath
-    //     );
-    //     const sourceFile = await fileHandle.getFileHandle(sourcePath);
-    //     // const fileHandle = await window.showDirectoryPicker();
-    //     // const sourceFile = await fileHandle.getFileHandle(sourcePath);
-
-    //     // const targetDirectory = await fileHandle.getDirectoryHandle(
-    //     //   targetPath,
-    //     //   { create: true }
-    //     // );
-
-    //     await sourceFile.moveTo(targetDirectory, { name: sourceFile.name });
-
-    //     console.log("File moved successfully!");
-    //   } catch (error) {
-    //     console.error("Failed to move the file:", error);
-    //   }
-    // },
-    // async resolveDirectory(baseDirectory, directoryPath) {
-    //   const parts = directoryPath.split("/");
-    //   let currentDirectory = baseDirectory;
-
-    //   for (const part of parts) {
-    //     if (part === "..") {
-    //       currentDirectory = await currentDirectory.getParent();
-    //     } else {
-    //       currentDirectory = await currentDirectory.getDirectoryHandle(part, {
-    //         create: true,
-    //       });
-    //     }
-    //   }
-
-    //   return currentDirectory;
-    // },
 
     getFileNameFromPath(path) {
       return path.split("/").pop();

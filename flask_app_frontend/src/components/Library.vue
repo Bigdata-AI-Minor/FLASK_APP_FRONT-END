@@ -32,6 +32,7 @@
         </div>
       </div>
       <button class="upload" @click="handleUpload">Upload</button>
+
       <!-- <button class="upload" @click="uploadImages; showModal = true ">Upload</button> -->
     </div>
     <footer>
@@ -92,7 +93,7 @@ export default {
     SavedModal,
   },
   computed: {
-    ...mapGetters(["getImageInformation" , "getfotoPredictions"]),
+    ...mapGetters(["getImageInformation", "getfotoPredictions"]),
   },
   mounted() {
     this.loadImages();
@@ -101,7 +102,7 @@ export default {
     getInformation() {
       return this.$store.getters.getImageInformation;
     },
-     getFilteredImages() {
+    getFilteredImages() {
       return this.$store.getters.getSelectedImages;
     },
     // get imageprediction is maybe not necessary
@@ -109,8 +110,8 @@ export default {
       return this.$store.getters.getfotoPredictions;
     },
     handleUpload() {
-      this.uploadImages();  
-      this.showModal = true; 
+      this.uploadImages();
+      this.showModal = true;
     },
     loadImages() {
       this.newimages = this.getInformation();
@@ -125,11 +126,25 @@ export default {
             name: imageName,
             prediction: null,
           };
+          // const info = {
+          //   name: imageName,
+          //   prediction: image.prediction,
+          // };
+          // const existingFoto = this.getPrediction().find(
+          //   (info) => info.name === imageName
+          // );
+          // if (!existingFoto) {
+          //   console.log("im an new image")
+          //   this.$store.commit("setFotoPrediction", info);
+          // }
+          // console.log(this.getPrediction().length);
 
           for (let i = 0; i < this.newimages.length; i++) {
             const imageData = this.newimages[i];
-            if (imageData.name === imageName){
+            if (imageData.name === imageName) {
               image.prediction = imageData.prediction;
+              console.log(image.name)
+
             }
           }
 
@@ -140,11 +155,12 @@ export default {
             image.data = base64Data;
             // here will check if it exists in the selected aray
             const uploadedImages = this.getFilteredImages();
-            const exists = uploadedImages.some((image) => image.name === imageName);
+            const exists = uploadedImages.some(
+              (image) => image.name === imageName
+            );
             if (!exists && image.prediction !== null) {
-              console.log(image.prediction);
-                this.images.push(image);
-            } 
+              this.images.push(image);
+            }
           };
           const blob = new Blob([imageFiles[imagePath]], {
             type: "image/jpeg",
@@ -155,6 +171,7 @@ export default {
     },
     navigateToImage(image) {
       const imageName = this.removeExtension(image.name);
+      console.log(imageName);
       this.$router.push({
         name: "imagedetails",
         params: { image: imageName },
@@ -208,12 +225,18 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-         const History = {
-                amount: this.selectedImages.length,
-                uploadDate: Date.now(),
-              };
-     
-      this.$store.commit("setUploadHistory", History);
+      const history = {
+        amount: this.selectedImages.length,
+        uploadDate: Date.now(),
+      };
+
+      console.log(history);
+      if (this.selectedImages && this.selectedImages.length > 0) {
+        console.log("i will push");
+        this.$store.commit("setTest", history);
+      }
+
+      // this.$store.commit("setUploadHistory", History);
       this.selectedImages = []; // Clear the selectedImages array
     },
   },

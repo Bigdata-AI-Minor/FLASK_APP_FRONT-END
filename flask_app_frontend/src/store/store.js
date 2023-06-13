@@ -29,6 +29,8 @@ const store = createStore({
             fotoPredictions: [],
             uploadHistory: [],
             selectedImages: [],
+            newUploadHistory: [],
+            test: [],
         }
     },
 
@@ -58,11 +60,16 @@ const store = createStore({
             return state.fotoPredictions;
         },
         getUploadHistory(state) {
+            console.log(state);
             return state.uploadHistory;
+        },
+        getTest(state) {
+            return state.test;
         },
         getSelectedImages(state) {
             return state.selectedImages;
         },
+        
 
     },
     mutations: {
@@ -93,12 +100,19 @@ const store = createStore({
         setUploadHistory(state, history) {
             state.uploadHistory.push(history);
         },
+        setTest(state, history) {
+            state.test.push(history);
+        },
+        // setNewUploadHistory(state, history) {
+        //     console.log(state.uploadHistory);
+        
+        //     state.uploadHistory.push(history);
+        // },
         setSelectedImages(state, selectedImages) {
             const exists = state.selectedImages.some((image) => image.name === selectedImages.name);
             if (!exists) {
               state.selectedImages.push(selectedImages);
             }
-            // state.selectedImages.push(selectedImages);
         },
         setFotoPrediction(state, { name, prediction }) {
             const foto = state.fotoPredictions.find((foto) => foto.name === name);

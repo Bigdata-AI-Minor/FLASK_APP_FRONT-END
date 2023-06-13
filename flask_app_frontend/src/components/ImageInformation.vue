@@ -112,6 +112,7 @@ export default {
         if (imageFiles.hasOwnProperty(imagePath)) {
           const imageId = this.getImageIdFromName(id);
           const imageName = this.getFileNameFromPath(imagePath);
+           
           if (imageId === id) {
             const file = new File([], imagePath);
             const image = {
@@ -125,9 +126,12 @@ export default {
             };
               for (let i = 0; i < this.newimages.length; i++) {
             const imageData = this.newimages[i];
-            if (imageData.name === imageName){
+            console.log(imageData.name);
+             if (imageData.name === imageId + (".jpg")){
+
+               console.log("i match");
               this.imageClassification = imageData.prediction;
-            }
+             }
           }
             this.imageTime = this.modifyDate(this.imageTime);
             this.imageLocationlatitude = this.getLongitudeValue();
@@ -149,6 +153,7 @@ export default {
       return (this.imageName = imageName);
     },
       getFileNameFromPath(path) {
+        console.log(path);
       return path.split("/").pop();
     },
     getImagefromFile() {
