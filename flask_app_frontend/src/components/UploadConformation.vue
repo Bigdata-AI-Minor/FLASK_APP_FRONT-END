@@ -17,6 +17,9 @@
 
 
 <style scoped>
+h4{
+  text-align: center;
+}
 label {
   display: block;
   margin-top: 1rem;

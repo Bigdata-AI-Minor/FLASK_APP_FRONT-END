@@ -3,10 +3,17 @@
     <div class="page-container">
       <div class="container">
         <div class="background-layer">
+          <div class="closemodal" @click="$emit('close-modal')">
+            <img
+              src="@/assets/images/exit.png"
+              alt="Exit modal"
+              class="fotos"
+            />
+          </div>
           <h4>Wil je deze fotos uploaden</h4>
           <div class="close">
             <div class="button-container">
-              <button class="btnCorrect" @click="navigateToCamera"> 
+              <button class="btnCorrect"  @click="showModal = true"> 
                 Correct
               </button>
               <button class="btnIncorrect" @click="$emit('close-modal')">
@@ -17,7 +24,7 @@
         </div>
       </div>
     </div>
-    <!-- <SavedModal v-show="showModal" @close-modal="showModal = false" /> -->
+    <SavedModal v-show="showModal" @close-modal="showModal = false" />
   </div>
 </template>
 
@@ -39,7 +46,7 @@ export default {
   components: {
     WelcomeItem,
     HelloWorld,
-    // SavedModal,
+    SavedModal,
   },
   mounted() {
     // this.loadImages();
@@ -50,6 +57,9 @@ export default {
 </script>
 
 <style scoped>
+.fotos{
+  float: right;
+}
 h4{
     text-align: center;
 }

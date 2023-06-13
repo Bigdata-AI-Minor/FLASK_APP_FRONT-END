@@ -68,6 +68,8 @@ export default {
         })
         .then((res) => {
         this.currentUser = res.data;
+        this.message = res.data.message
+        this.$router.push("/login");
         })
         .catch((error) => this.message = error.response.data.message);
     }

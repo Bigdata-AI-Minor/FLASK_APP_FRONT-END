@@ -66,6 +66,7 @@ const store = createStore({
 
     },
     mutations: {
+        // the logout clears all the data when logging out. it can clear all the getters and setters properties
         logout(state) {
             state.token = null;
             state.Username = null;

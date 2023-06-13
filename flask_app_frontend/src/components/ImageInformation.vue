@@ -71,14 +71,17 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getLatitude", "getLongitude"]),
+    ...mapGetters(["getLatitude", "getLongitude", "getfotoPredictions"]),
   },
-
+  
   mounted() {
     this.getImageIdFromUrl();
     this.getImageById(this.imageName);
   },
   methods: {
+      getInformation() {
+      return this.$store.getters.getImageInformation;
+    },
     navigateToCamera() {
       this.$router.push("/camera");
     },
@@ -103,10 +106,12 @@ export default {
     },
 
     async getImageById(id) {
+      this.newimages = this.getInformation();
       const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
       for (const imagePath in imageFiles) {
         if (imageFiles.hasOwnProperty(imagePath)) {
           const imageId = this.getImageIdFromName(id);
+          const imageName = this.getFileNameFromPath(imagePath);
           if (imageId === id) {
             const file = new File([], imagePath);
             const image = {
@@ -116,7 +121,14 @@ export default {
               )),
               name: imageId,
               dateCreated: (this.imageTime = file.lastModifiedDate),
+              prediction: null,
             };
+              for (let i = 0; i < this.newimages.length; i++) {
+            const imageData = this.newimages[i];
+            if (imageData.name === imageName){
+              this.imageClassification = imageData.prediction;
+            }
+          }
             this.imageTime = this.modifyDate(this.imageTime);
             this.imageLocationlatitude = this.getLongitudeValue();
             this.imageLocationlongtitude = this.getLatitudeValue();
@@ -135,6 +147,9 @@ export default {
       const pathParts = currentPath.split("/");
       const imageName = pathParts[pathParts.length - 1]; 
       return (this.imageName = imageName);
+    },
+      getFileNameFromPath(path) {
+      return path.split("/").pop();
     },
     getImagefromFile() {
       return this.images.find((image) => image.name.split(".")[0] === imageId);

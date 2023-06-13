@@ -141,8 +141,9 @@ export default {
             // here will check if it exists in the selected aray
             const uploadedImages = this.getFilteredImages();
             const exists = uploadedImages.some((image) => image.name === imageName);
-            if (!exists) {
-              this.images.push(image);
+            if (!exists && image.prediction !== null) {
+              console.log(image.prediction);
+                this.images.push(image);
             } 
           };
           const blob = new Blob([imageFiles[imagePath]], {
