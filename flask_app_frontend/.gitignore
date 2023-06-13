@@ -26,6 +26,4 @@ coverage
 *.njsproj
 *.sln
 *.sw?
-
-localimages/*
-!localimages/localimages
+/src/assets/localimages/*
