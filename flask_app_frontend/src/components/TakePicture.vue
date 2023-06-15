@@ -37,11 +37,12 @@ export default {
     this.checkMobileDimensions();
     window.addEventListener("resize", this.checkMobileDimensions);
   },
-
+  // check the dimensions of how large the canvas of the camera has to be
   beforeUnmount() {
     window.removeEventListener("resize", this.checkMobileDimensions);
   },
   methods: {
+    // activate the camera if the device has one
     startCapture() {
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: false })
@@ -54,6 +55,7 @@ export default {
           console.log(error);
         });
     },
+    // create a .file type of the image so it can be used in the swagger back-end; In image is a 64base string and a file only can be created if it is a blob
     convertToFile(base64Data, fileName, fileType) {
       const base64WithoutPrefix = base64Data.replace(
         /^data:image\/(png|jpeg|jpg);base64,/,
@@ -75,6 +77,7 @@ export default {
       const file = new File([blob], fileName, { type: fileType });
       return file;
     },
+    // after taking the picture also take the geolocation. this will be safed in the store which can be accessed later. the picture will be downloaded to the designated folder
     takePicture() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -104,7 +107,7 @@ export default {
       } else {
         console.log("Geolocation is not supported by this browser.");
       }
-    },
+    }, // get the geo location
     handleSuccess(position) {
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
@@ -112,6 +115,7 @@ export default {
     handleError(error) {
       console.log("Error occurred while retrieving geolocation:", error);
     },
+      // download the image
     downloadImage(imageData) {
       console.log(this.imagefile);
       const link = document.createElement("a");
@@ -134,6 +138,7 @@ export default {
         });
       }, 2000);
     },
+    // remove the extension from the filename like .jpg so only a number will be left
     removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
       if (dotIndex !== -1) {
@@ -146,10 +151,12 @@ export default {
     generateRandomId() {
       return `${Date.now()}-${Math.random()}`.slice(0, 10);
     },
+    // the canvas if where the camera has to be displayed in
     initCanvas() {
       this.canvas.setAttribute("width", this.video.videoWidth);
       this.canvas.setAttribute("height", this.video.videoHeight);
     },
+    // check the dimenstions of the device
     checkMobileDimensions() {
       const mobileWidth = 600; // Adjust the value to match your desired mobile width
       const windowWidth = window.innerWidth;
