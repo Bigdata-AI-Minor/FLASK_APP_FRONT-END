@@ -1,5 +1,5 @@
 # FLASK_APP_FRONT-END
-front-end is made in vue.js
+front-end is made in vue.js; The full code is on the development branche
 BigData en AI minor
 
 In this focus we will focus on taking a picture and sending it to the back-end. 
