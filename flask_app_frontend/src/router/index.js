@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-
+// this has been used to create access the different pages in the application based on the route/ :image means that the imageid will be seen in the url to open the details of the specific image
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
