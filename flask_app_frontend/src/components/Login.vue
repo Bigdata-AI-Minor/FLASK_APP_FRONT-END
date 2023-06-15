@@ -54,6 +54,7 @@ export default {
       message: "",
     };
   },
+  // do the login method in the store and give the parameters so the axios request which is in the store can execute
   methods: {
     login() {
       this.$store
