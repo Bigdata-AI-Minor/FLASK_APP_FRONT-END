@@ -110,6 +110,7 @@ export default {
     getTakenImage() {
       return this.$store.getters.getCapturedImage;
     },
+    // send a picture to the back-end and get a prediction back. using the back-end request a .file like selecting a file in windowsexplorer; this is done in the takepicture
     getprediction() {
       console.log(this.testimage);
       const uploadPromises = this.test.map(() => {
@@ -161,6 +162,7 @@ export default {
     navigateToCamera() {
       this.$router.push("/camera");
     },
+    // remove the .jpg from the image name
     removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
       if (dotIndex !== -1) {
