@@ -1,0 +1,26 @@
+{
+  "name": "flask_app_frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "exif-js": "^2.3.0",
+    "file-saver": "^2.0.5",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^11.1.1",
+    "mitt": "^3.0.0",
+    "vue": "^3.3.2",
+    "vue-router": "^4.2.0",
+    "vuex-persistedstate": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/webpack-env": "^1.18.1",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "vite": "^4.3.5",
+    "vite-fs": "^0.0.2"
+  }
+}
