@@ -3,7 +3,7 @@ import axios from '../axios-auth';
 import jwtDecode from 'jwt-decode';
 import createPersistedState from 'vuex-persistedstate';
 
-
+// when the user loggs in the password will be masked and saved so you can see it again in the profile screen where the user can modify their password
 function maskPassword(password) {
     var maskedPassword = "";
     for (var i = 0; i < password.length; i++) {
@@ -33,7 +33,7 @@ const store = createStore({
             test: [],
         }
     },
-
+    // the getters are used to take the information from the store
     getters: {
         isAuthenticated(state) {
             return state.token != null;
@@ -72,6 +72,7 @@ const store = createStore({
         
 
     },
+    // de setters are used to set the information
     mutations: {
         // the logout clears all the data when logging out. it can clear all the getters and setters properties
         logout(state) {
@@ -108,12 +109,14 @@ const store = createStore({
         
         //     state.uploadHistory.push(history);
         // },
+        // the seleced images are used to not display the items that have been uploaded
         setSelectedImages(state, selectedImages) {
             const exists = state.selectedImages.some((image) => image.name === selectedImages.name);
             if (!exists) {
               state.selectedImages.push(selectedImages);
             }
         },
+        // the prediction of the images will be saved on the together with the image name so it can be accessed later
         setFotoPrediction(state, { name, prediction }) {
             const foto = state.fotoPredictions.find((foto) => foto.name === name);
             if (foto) {
@@ -158,6 +161,7 @@ const store = createStore({
         setImageInformation({ commit }, imageInformation) {
             commit('imageInformation', imageInformation);
         },
+        // this endpoint is used for logging in and check the username and password; if it is correct you will set the jwt token in the localstorage so it can be used for later functionalities
         login({ commit }, parameters) {
             return new Promise((resolve, reject) => {
                 axios
