@@ -85,6 +85,7 @@ export default {
       username: localStorage.getItem("username"),
     };
   },
+  // get user based on the userid which has been saved in the store so the information in the profile can be stored
   methods: {
     getUser() {
       axios.get(`/users/${localStorage.getItem('id')}`, {
