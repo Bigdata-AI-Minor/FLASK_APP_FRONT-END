@@ -1,4 +1,5 @@
 <script setup>
+  // the define props makes it so only the message has to be entered the name can be alteed and used on differend pages e.g. helloworld in a specific style can be made to noworld in the same style
 defineProps({
   msg: {
     type: String,
