@@ -92,9 +92,11 @@ export default {
     HelloWorld,
     SavedModal,
   },
+  use the getters from the store
   computed: {
     ...mapGetters(["getImageInformation", "getfotoPredictions"]),
   },
+  execute when loading the page
   mounted() {
     this.loadImages();
   },
@@ -113,6 +115,7 @@ export default {
       this.uploadImages();
       this.showModal = true;
     },
+    // load the downloaded images from the folder
     loadImages() {
       this.newimages = this.getInformation();
       // this.imagepredictions = this.getPrediction();
@@ -147,7 +150,7 @@ export default {
 
             }
           }
-
+          // check if the images are in the setselected because if it is it will not be seen in the library
           const reader = new FileReader();
           reader.onload = (event) => {
             image.data = event.target.result;
@@ -177,6 +180,7 @@ export default {
         params: { image: imageName },
       });
     },
+      // selected and deselected an image and put in in a array
     toggleSelection(image) {
       image.selected = !image.selected;
       if (image.selected) {
