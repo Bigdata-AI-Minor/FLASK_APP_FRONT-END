@@ -2,11 +2,12 @@ front-end is made in vue.js
 BigData en AI minor
 ==================================
 In this focus we will focus on taking a picture and sending it to the back-end. 
-After that we will get a response back as a response which we will display.
+After that we will get a response back from the back-end which we will display.
 The application will ask for premission to use the camera and access the location. 
 If those tose are not accepted there cannot be made a picture and the application will not be used
 
 ==================================
+
 This application works as follow:
   - a user thake a picture
   - the picture is saved locally on the system
@@ -25,7 +26,7 @@ Students: 655359, 645698, 649186 & 570008
 ==================================
 Overview
 You can the application by typing the command below in the root directory
-> npm run dev
-The front-end application can be found at the link below
-http://localhost:5173/
+ - npm run dev
+The front-end application can be found at the link below:
+-  http://localhost:5173/
 
