@@ -60,10 +60,11 @@ export default {
     //   getInformation() {
     //   return this.$store.getters.getImageInformation;
     // },
+    // get the file which contains all the information
     getFile() {
       return this.$store.getters.getImageFIle;
     },
-
+    // modify the prediction if it is wrong
     applyChange() {
       const value = this.getInformation();
       const name = this.getImageIdFromUrl() + ".jpg";
@@ -76,7 +77,7 @@ export default {
         }
       }
     },
-
+    // has been explaind in the library.vue
     loadImages(id) {
     const testfile = this.getFile();
       this.testimage = testfile;
