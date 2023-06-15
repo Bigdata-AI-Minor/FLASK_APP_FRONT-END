@@ -26,7 +26,7 @@ Students: 655359, 645698, 649186 & 570008
 ==================================
 Overview
 You can the application by typing the command below in the root directory
-npm run dev
+-  npm run dev
 The front-end application can be found at the link below:
 -  http://localhost:5173/
 
