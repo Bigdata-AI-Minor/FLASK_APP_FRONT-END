@@ -57,6 +57,7 @@ export default {
       isSuccess: null,
     };
   },
+  // create users in the database with a post request
   methods: {
     register() {
       axios
