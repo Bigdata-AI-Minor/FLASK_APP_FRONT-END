@@ -22,15 +22,18 @@ This application works as follow:
 
 ==================================
 # FLASK_APP_FRONT-END
-front-end is made in vue.js; The full code is on the development branche
-BigData en AI minor
+This repository is made with vue.js and javascript as a web app aplication. For this you need NPM and Vue CLI, for installing that you can find it here: 
+-> https://cli.vuejs.org/guide/installation.html
+-> https://docs.npmjs.com/downloading-and-installing-node-js-and-npm. 
 
-In this focus we will focus on taking a picture and sending it to the back-end. 
-After that we will get the back-end back as a response which we will display
+If you have installed both, you can you the front-end application with:
+```sh
+npm run dev
+```
 
-==================================
+The front-end application can be found in your browser at the link below:
+```sh
+http://localhost:5173/
+```
 
--  npm run dev
-The front-end application can be found at the link below:
--  http://localhost:5173/
-
+This is only in the front-end, for fully working application with prediction, you need to run the backend application in the enviroment. For more info check: https://github.com/Bigdata-AI-Minor/Flask_app
