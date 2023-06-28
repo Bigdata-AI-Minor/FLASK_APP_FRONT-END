@@ -22,7 +22,7 @@ This application works as follow:
 
 ==================================
 # FLASK_APP_FRONT-END
-This repository is made with vue.js and javascript as a web app aplication. For this you need NPM and Vue CLI, for installing that you can find it here:  
+This repository is made with vue.js and javascript as a web app aplication. For this you need NPM, Node.js and Vue CLI, for installing that you can find it here:  
   \-> https://cli.vuejs.org/guide/installation.html  
    -> https://docs.npmjs.com/downloading-and-installing-node-js-and-npm. 
 
