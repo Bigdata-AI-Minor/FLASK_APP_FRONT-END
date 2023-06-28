@@ -48,5 +48,5 @@ The front-end application can be found in your browser at the link below:
 http://localhost:5173/
 ```
 
-This is only in the front-end, for fully working application with prediction, you need to run the backend application in the enviroment. So the two project have to run at the same time. For that you can open both projects in a new windows and make them run. \
+This is only in the front-end, for fully working application with prediction, you need to run the backend application in the enviroment. So the two project have to run at the same time. For that you can open both projects in a new window of Visual studio code and make them run. \
 For more info check: https://github.com/Bigdata-AI-Minor/Flask_app
