@@ -11,12 +11,12 @@
       </h4>
       <div class="content">
         <div class="button-container" v-if="!message && prediction !== ''">
-          <button class="btnCorrect" @click="navigateToCamera">Correct</button>
+          <button class="btnCorrect" @click="NavigateToPage('/camera')">Correct</button>
           <button class="btnIncorrect" @click="navigateToPredicionChange">
             Incorrect
           </button>
         </div>
-        <a href="/camera">
+        <a @click="NavigateToPage('/camera')">
           <img src="@/assets/images/cameraIcon.jpg" alt="cameraicon" />
         </a>
       </div>
@@ -59,6 +59,9 @@ export default {
     },
     getFile() {
       return this.$store.getters.getImageFIle;
+    },
+    NavigateToPage(name) {
+      this.$router.push(name);
     },
 
     loadImages(id) {
@@ -136,10 +139,10 @@ export default {
               const imageData = {
                 image: this.testimage,
                 prediction: this.prediction,
-                name:this.testimage.name
+                name: this.testimage.name,
               };
               console.log(imageData);
-                this.$store.commit("setImageInformation", imageData);
+              this.$store.commit("setImageInformation", imageData);
             }
           }
         })
@@ -158,9 +161,9 @@ export default {
     getImageIdFromName(imageName) {
       return imageName.split(".")[0];
     },
-    navigateToCamera() {
-      this.$router.push("/camera");
-    },
+    // navigateToCamera() {
+    //   this.$router.push("/camera");
+    // },
     removeExtension(fileName) {
       const dotIndex = fileName.lastIndexOf(".");
       if (dotIndex !== -1) {

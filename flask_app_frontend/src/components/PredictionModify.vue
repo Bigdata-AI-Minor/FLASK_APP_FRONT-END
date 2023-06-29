@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="camera">
-          <a href="/camera">
+          <a @click="NavigateToPage('/camera')">
             <img
               src="@/assets/images/return.jpg"
               style="float: left"
@@ -70,6 +70,9 @@ export default {
   methods: {
     getInformation() {
       return this.$store.getters.getImageInformation;
+    },
+      NavigateToPage(name) {
+      this.$router.push(name);
     },
 
     getClassifications() {

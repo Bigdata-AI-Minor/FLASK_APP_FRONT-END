@@ -9,7 +9,7 @@
       @click="takePicture"
       class="takepicture"
     />
-    <a href="/library" class="footer-link">
+    <a @click="NavigateToPage('/library')" class="footer-link">
       <img src="@/assets/images/fotoslibrary.png" alt="Image 3" class="fotos" />
     </a>
     <canvas ref="canvas" style="display: none"></canvas>
@@ -74,6 +74,9 @@ export default {
       const blob = new Blob(byteArrays, { type: fileType });
       const file = new File([blob], fileName, { type: fileType });
       return file;
+    },
+       NavigateToPage(name) {
+      this.$router.push(name);
     },
     takePicture() {
       if (navigator.geolocation) {

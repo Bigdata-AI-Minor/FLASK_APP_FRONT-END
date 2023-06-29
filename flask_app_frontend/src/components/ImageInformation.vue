@@ -34,7 +34,7 @@
         </table>
       </div>
       <div class="camera">
-        <a href="/library">
+        <a @click="NavigateToPage('/library')">
           <img src="@/assets/images/return.jpg" alt="cameraicon" />
         </a>
         <img
@@ -73,7 +73,6 @@ export default {
   computed: {
     ...mapGetters(["getLatitude", "getLongitude", "getfotoPredictions"]),
   },
-  
   mounted() {
     this.getImageIdFromUrl();
     this.getImageById(this.imageName);
@@ -84,6 +83,9 @@ export default {
     },
     navigateToCamera() {
       this.$router.push("/camera");
+    },
+    NavigateToPage(name) {
+      this.$router.push(name);
     },
     handleLocationUpdate(locationData) {
       this.locationData = locationData;

@@ -12,7 +12,7 @@
             Incorrect
           </button>
         </div>
-        <a href="/camera">
+        <a @click="NavigateToPage('/camera')">
           <img src="@/assets/images/cameraIcon.jpg" alt="cameraicon" />
         </a>
       </div>
@@ -57,9 +57,9 @@ export default {
       return this.$store.getters.getImageInformation;
     },
 
-    //   getInformation() {
-    //   return this.$store.getters.getImageInformation;
-    // },
+    NavigateToPage(name) {
+      this.$router.push(name);
+    },
     getFile() {
       return this.$store.getters.getImageFIle;
     },
@@ -71,14 +71,17 @@ export default {
         const foto = value[i];
         if (foto.name === name) {
           this.prediction = foto.prediction;
-          this.$store.commit("setFotoPrediction", { name, prediction: foto.prediction });
+          this.$store.commit("setFotoPrediction", {
+            name,
+            prediction: foto.prediction,
+          });
           return;
         }
       }
     },
 
     loadImages(id) {
-    const testfile = this.getFile();
+      const testfile = this.getFile();
       this.testimage = testfile;
       this.test = [];
       this.capturedImageData = this.getTakenImage();

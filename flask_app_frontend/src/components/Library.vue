@@ -38,7 +38,7 @@
     <footer>
       <div class="row">
         <div class="col">
-          <a href="/camera" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/camera')">
             <img
               src="@/assets/images/photolibrary/camera.png"
               alt="Image 1"
@@ -47,7 +47,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="/library" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/library')">
             <img
               src="@/assets/images/photolibrary/fotos.jpg"
               alt="Image 2"
@@ -56,7 +56,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="/profile" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/profile')">
             <img
               src="@/assets/images/photolibrary/profiel.png"
               alt="Image 3"
@@ -113,9 +113,11 @@ export default {
       this.uploadImages();
       this.showModal = true;
     },
+     NavigateToPage(name) {
+      this.$router.push(name);
+    },
     loadImages() {
       this.newimages = this.getInformation();
-      // this.imagepredictions = this.getPrediction();
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
       for (const imagePath in imageFiles) {
@@ -126,19 +128,6 @@ export default {
             name: imageName,
             prediction: null,
           };
-          // const info = {
-          //   name: imageName,
-          //   prediction: image.prediction,
-          // };
-          // const existingFoto = this.getPrediction().find(
-          //   (info) => info.name === imageName
-          // );
-          // if (!existingFoto) {
-          //   console.log("im an new image")
-          //   this.$store.commit("setFotoPrediction", info);
-          // }
-          // console.log(this.getPrediction().length);
-
           for (let i = 0; i < this.newimages.length; i++) {
             const imageData = this.newimages[i];
             if (imageData.name === imageName) {
