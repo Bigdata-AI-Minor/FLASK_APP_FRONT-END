@@ -34,7 +34,7 @@
         </table>
       </div>
       <div class="camera">
-        <a href="/library">
+        <a @click="NavigateToPage('/library')">
           <img src="@/assets/images/return.jpg" alt="cameraicon" />
         </a>
         <img
@@ -73,7 +73,6 @@ export default {
   computed: {
     ...mapGetters(["getLatitude", "getLongitude", "getfotoPredictions"]),
   },
-  
   mounted() {
     this.getImageIdFromUrl();
     this.getImageById(this.imageName);
@@ -85,10 +84,13 @@ export default {
     navigateToCamera() {
       this.$router.push("/camera");
     },
+    NavigateToPage(name) {
+      this.$router.push(name);
+    },
     handleLocationUpdate(locationData) {
       this.locationData = locationData;
     },
-    // the date is a long number e.g. 120541548 and you would like to have a normal date lake 12-6-2013
+
     modifyDate(dateTime) {
       const dateString = dateTime;
       const date = new Date(dateString);
@@ -98,15 +100,13 @@ export default {
       });
       return time;
     },
-     // get the latitude of the image that has been set in the store when taking a picture in takepicture in vue.js
     getLatitudeValue() {
       return this.$store.getters.getLatitude;
     },
-    // get the longtitude of the image that has been set in the store when taking a picture in takepicture in vue.js
     getLongitudeValue() {
       return this.$store.getters.getLongitude;
     },
-    // get the correct image from the folder based on the id
+
     async getImageById(id) {
       this.newimages = this.getInformation();
       const imageFiles = await import.meta.glob(`@/assets/localimages/*.jpg`);
@@ -148,7 +148,6 @@ export default {
       const id = imageName.split(".")[0];
       return id;
     },
-    // get the specific imageid from the url
     getImageIdFromUrl() {
       const currentPath = window.location.pathname;
       const pathParts = currentPath.split("/");

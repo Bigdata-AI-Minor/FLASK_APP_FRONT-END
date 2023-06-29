@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="camera">
-          <a href="/camera">
+          <a @click="NavigateToPage('/camera')">
             <img
               src="@/assets/images/return.jpg"
               style="float: left"
@@ -71,7 +71,10 @@ export default {
     getInformation() {
       return this.$store.getters.getImageInformation;
     },
-  // get the classification from the back-end and loop through them in a array to display
+      NavigateToPage(name) {
+      this.$router.push(name);
+    },
+
     getClassifications() {
       axios
         .get(`/classification/`, {
@@ -85,7 +88,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    // remove the unnecsary information from the classification so there will only be the named 'cardboard' or 'plastic left' and push it to the array 
+
     trimClassifications(response) {
       const trimmedClassifications = response.data.data.reduce((acc, item) => {
         acc.push(item.classification);
@@ -93,7 +96,7 @@ export default {
       }, []);
       this.trimmedClassifications = trimmedClassifications;
     },
-    // after selecting a new classification it needs to be set to the image
+
     updateClassification() {
       const value = this.getInformation();
       const selectedValue = this.selectedOption;

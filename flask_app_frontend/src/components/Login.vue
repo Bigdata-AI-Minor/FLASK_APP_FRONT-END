@@ -26,13 +26,14 @@
                 v-model="this.Password"
               />
             </div>
-           <div class="error-box mb-3">
+            <div class="error-box mb-3">
               <label class="error-msg">{{ message }}</label>
             </div>
             <button type="button" @click="login()" class="btnLogin">
               Login
             </button>
-            <label class="register"><a href="register">Register</a></label>
+            <label class="register" @click="NavigateToRegister()">Register</label
+            >
           </div>
         </main>
       </div>
@@ -54,7 +55,6 @@ export default {
       message: "",
     };
   },
-  // do the login method in the store and give the parameters so the axios request which is in the store can execute
   methods: {
     login() {
       this.$store
@@ -69,12 +69,20 @@ export default {
           this.message = error.response.data.message;
         });
     },
+    NavigateToRegister() {
+      this.$router.push("/register");
+    },
   },
 };
 </script>
 
 <style scoped>
-.error-msg{
+.register {
+  color: #007bff;
+  text-decoration: none;
+  background-color: transparent;
+}
+.error-msg {
   color: red;
 }
 .page-container {
@@ -132,7 +140,7 @@ export default {
 label {
   display: block;
   margin-top: 1rem;
-  font: 0.9rem 'Fira Sans', sans-serif;
+  font: 0.9rem "Fira Sans", sans-serif;
 }
 
 @media (min-width: 1024px) {

@@ -55,7 +55,6 @@ export default {
        message: "",
     };
   },
-  // make a axios request to the back-end server in swagger so the user can be edited
   methods: {
     editUser() {
       axios

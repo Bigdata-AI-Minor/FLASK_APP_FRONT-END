@@ -31,7 +31,6 @@ export default {
   },
   mounted() {
   },
-  // navigate to the page /library
   methods: {
      NavigatetoLibrary() {
       this.$router.push("/library");

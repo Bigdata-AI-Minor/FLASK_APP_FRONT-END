@@ -58,7 +58,7 @@ export default {
     getInformation() {
       return this.$store.getters.getUploadHistory;
     },
-    get a valid date instead of only numbers
+    // get a valid date instead of only numbers
     formatDate(timestamp) {
       const date = new Date(timestamp);
       return date.toLocaleDateString();

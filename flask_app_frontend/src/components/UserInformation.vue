@@ -20,7 +20,7 @@
           </div>
           <div class="box">
              <label ><label class="user">Upload History</label></label>
-              <img src="@/assets/images/eyeIcon.png"   @click="showUpload = true" alt="Exit modal" class="editlogo2" />
+              <img src="@/assets/images/eyeicon.png"   @click="showUpload = true" alt="Exit modal" class="editlogo2" />
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
     <footer>
       <div class="row">
         <div class="col">
-          <a href="/camera" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/camera')">
             <img
               src="@/assets/images/photolibrary/camera.png"
               alt="Image 1"
@@ -45,7 +45,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="/library" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/library')">
             <img
               src="@/assets/images/photolibrary/fotos.jpg"
               alt="Image 2"
@@ -54,7 +54,7 @@
           </a>
         </div>
         <div class="col">
-          <a href="/profile" class="footer-link">
+          <a class="footer-link" @click="NavigateToPage('/profile')">
             <img
               src="@/assets/images/photolibrary/profiel.png"
               alt="Image 3"
@@ -85,7 +85,6 @@ export default {
       username: localStorage.getItem("username"),
     };
   },
-  // get user based on the userid which has been saved in the store so the information in the profile can be stored
   methods: {
     getUser() {
       axios.get(`/users/${localStorage.getItem('id')}`, {
@@ -98,6 +97,9 @@ export default {
         this.currentUser = res.data;
         })
         .catch((error) => console.log(error));
+    },
+       NavigateToPage(name) {
+      this.$router.push(name);
     },
     logout() {
       this.$store

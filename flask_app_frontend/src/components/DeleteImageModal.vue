@@ -43,12 +43,10 @@ export default {
     this.loadImages();
   },
   methods: {
-    // the function handles multiple actions on a button click
      handleUpload() {
       this.deleteImage();  
       this.showModal = true; 
     },
-    // load the images of the folder after it has been downloaded in the takepicture.vue, after that push it to the array
     loadImages() {
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
@@ -64,7 +62,6 @@ export default {
         }
       }
     },
-    // put the deleted images in the store of the setselected images so it will not be seen in the library
     deleteImage() {
       this.images = [];
       const imageFiles = import.meta.glob(`@/assets/localimages/*.jpg`);
@@ -80,7 +77,7 @@ export default {
         }
       }
     },
-    // the the failename from the image so you wil have for example xxxxx.jpg
+
     getFileNameFromPath(path) {
       return path.split("/").pop();
     },
