@@ -53,14 +53,17 @@ export default {
   mounted() {
     // this.displayHistory();
   },
+  // get the history upload history of the store
   methods: {
     getInformation() {
       return this.$store.getters.getUploadHistory;
     },
+    // get a valid date instead of only numbers
     formatDate(timestamp) {
       const date = new Date(timestamp);
       return date.toLocaleDateString();
     },
+    // dynamically fill the table based on the amount of items in the array (Store)
     displayHistory() {
       const history = this.getInformation();
 
