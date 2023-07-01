@@ -1,3 +1,5 @@
+# Flask_app_frontend
+
 This readme will cover the two ways of setting up the front-end of the application.
 
 There are 2 option for setting up the frondend application. One is setting up natively by setting the environment up or setting up the docker container where in the dependencies are contained.
@@ -6,7 +8,7 @@ This is only in the front-end, for fully working application with prediction, yo
 For more info check: https://github.com/Bigdata-AI-Minor/Flask_app
 
 
-**Native platform Windows**
+# Native platform Windows
 This repository is made with vue.js and javascript as a web app application. For that you need the following environment packages and a IDE with a build terminal (you can also use the CMD):
 ```sh
 NPM
