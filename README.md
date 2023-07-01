@@ -37,17 +37,22 @@ http://localhost:5173/
 **Docker**
 You will need to install docker which contains the environment packages that is needed for this project. You can follow the link below: 
 ```sh
- -> https://docs.docker.com/engine/install/
+https://docs.docker.com/engine/install/
 ```
-After installing docker you will need to navigate to the root folder of the project in a CLI. If you open the project in VSCode as a folder, it will automatically open the root folder in the terminal (ctrl + `). For starting the container with the project you need to type in the 
+After installing docker you will need to navigate to the root folder of the project in a CLI. If you open the project in VSCode as a folder, it will automatically open the root folder in the terminal (ctrl + `). For starting the container with the project you need to navigate into the 'flask_app_frontend' folder, you can do that by typing in from the root folder:
 
+```sh 
+cd .\flask_app_frontend\
+```
 
-After you are in the current directory you can use the following command in the same terminal:
+inside the folder you can start the docker container by using the following command:
 ```sh
 docker-compose up
 ```
 
-After this the environment is set up and will be available at:
+In docker you will see the container and the status of it. Inside is the environment image that contains the application and the environment packages. If something is not working, you need to delete the container and start the container again.
+
+If the container is running you can visit the application in the browser at the following address:
 ```sh
 http://localhost:5173/
 ```
