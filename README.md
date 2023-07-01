@@ -22,7 +22,7 @@ https://code.visualstudio.com/download
 After the steps above the required software is installed. 
 The next steps are:
 1. Clone this Repository with a CLI or download the zip which contains the project
-2. Open the project in visual studio code or another IDE.
+2. Open the project in visual studio code or another IDE as a project or folder.
 
 For starting the frontend application, use the following command for starting the developer environment wherein you can launch the application:
 ```sh
