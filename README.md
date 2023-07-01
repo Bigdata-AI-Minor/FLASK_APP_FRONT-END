@@ -36,7 +36,7 @@ Now you can navigate to the application in your browser by typing the address in
 http://localhost:5173/
 ```
 
-**Docker**
+# Docker
 You will need to install docker which contains the environment packages that is needed for this project. You can follow the link below: 
 ```sh
 https://docs.docker.com/engine/install/
